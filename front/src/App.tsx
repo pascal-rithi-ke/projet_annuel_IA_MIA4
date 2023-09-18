@@ -1,11 +1,13 @@
-import React from 'react'
 import { Register } from './Pages/Public/Register'
+import { Navbar } from './Components/organims/Navbar'
+import { Home } from './Pages/Public/Home'
 
 const App = () => {
 
   return (
     <>
-      <Register />
+      <Navbar />
+      <Home />
     </>
   )
 }
