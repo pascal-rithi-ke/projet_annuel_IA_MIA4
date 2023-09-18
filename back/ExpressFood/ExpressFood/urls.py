@@ -18,6 +18,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('', views.index),
     # ... d'autres vues ...
     path('get_plats/', views.get_plats, name='get_plats'),
 ]

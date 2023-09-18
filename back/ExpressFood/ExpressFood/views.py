@@ -19,6 +19,11 @@ db_collection = os.getenv('MONGO_DB_COLLECTION')
 
 uri = f"mongodb+srv://{user}:{password}@{host}/?retryWrites=true&w=majority"
 
+# Home page
+def index(request):
+    return HttpResponse("Api is running")
+
+# Get all plats
 def get_plats(request):    
     # On se connecte à la base de données
     client = pymongo.MongoClient(uri)
