@@ -1,1 +1,1 @@
-Projet Annuel - IA - MIA4 
+Projet Annuel - MIA4 
