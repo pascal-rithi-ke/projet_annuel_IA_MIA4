@@ -21,4 +21,5 @@ urlpatterns = [
     path('', views.index),
     # ... d'autres vues ...
     path('get_plats/', views.get_plats, name='get_plats'),
+    path('get_desserts/', views.get_desserts, name='get_desserts'),
 ]
