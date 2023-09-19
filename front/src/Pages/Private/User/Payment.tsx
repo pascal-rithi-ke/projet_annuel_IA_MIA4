@@ -1,5 +1,6 @@
 // import { Button } from "../../../Components/atoms/Button"
 import { useForm } from "react-hook-form"
+import { Button } from "../../../Components/atoms/Button";
 
 export const Payment = () => {
   const { register, handleSubmit } = useForm();
@@ -106,7 +107,7 @@ export const Payment = () => {
               </div>
             </div>
             <div className="p-6">
-              <button type="submit" className="px-6 py-3 rounded bg-secondary text-white font-semibold w-full">Confirmer la commande</button>
+              <Button type="submit" className="w-full">Confirmer la commande</Button>
             </div>
           </div>
         </aside>
