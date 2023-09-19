@@ -1,6 +1,6 @@
 
 
-export const Recette = () => {
+export const Recettes = () => {
 
   return (
     <div className="bg-white">
