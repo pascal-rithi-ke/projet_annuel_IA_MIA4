@@ -20,6 +20,9 @@ from . import views
 urlpatterns = [
     path('', views.index),
     # ... d'autres vues ...
-    path('get_plats/', views.get_plats, name='get_plats'),
-    path('get_desserts/', views.get_desserts, name='get_desserts'),
+    #path('get_plats/', views.get_plats, name='get_plats'),
+    #path('get_plat/<str:id>/', views.get_plat, name='get_plat'),
+    
+    #path('get_desserts/', views.get_desserts, name='get_desserts'),
+    #path('get_dessert/<str:id>/', views.get_dessert, name='get_dessert'),
 ]
