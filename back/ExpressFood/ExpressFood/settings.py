@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ExpressFood',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -122,6 +123,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-MONGO_URI = 'mongodb://localhost:27017/'
-MONGO_DB_NAME = 'ExpressFood'

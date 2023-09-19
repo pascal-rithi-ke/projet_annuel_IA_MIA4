@@ -20,7 +20,7 @@ def get_mongodb_connect():
 
         # Si la connexion réussit renvoit la connexion
         print("Connexion à MongoDB réussie")
-        return client
+        return uri
     
     except Exception as e:
         # Gérer les erreurs de connexion ici
