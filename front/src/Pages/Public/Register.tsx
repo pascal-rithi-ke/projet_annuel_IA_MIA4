@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form"
+import { Link } from "react-router-dom"
 
 export const Register = () => {
   const {
@@ -49,9 +50,7 @@ export const Register = () => {
                 color: "white",
               }}
             />
-            <button
-              className="underline"
-            >Retour</button>
+            <Link to="/login" className="underline">Retour</Link>
           </form>
         </div>
       </section>
