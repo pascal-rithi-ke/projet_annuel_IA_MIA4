@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 export const Footer = () => {
     return (
         <footer className="bg-white border border-">
-            <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between">
+            <div className="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8 flex justify-between">
                 <div>
                     <p className="text-sm">© ExpressFood {new Date().getFullYear()}</p>
                 </div>
