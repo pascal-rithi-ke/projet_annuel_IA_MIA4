@@ -16,6 +16,8 @@ import { ProtectedRoute } from './lib/Router/ProtectedRoute'
 import { ProtectedPublicRoute } from './lib/Router/ProtectedPublicRoute'
 import { Navbar } from './Components/organims/Navbar'
 import { TemplateDefault } from './Components/templates/TemplateDefault'
+import { Terms } from './Pages/Public/Terms'
+import { Privacy } from './Pages/Public/Privacy'
 
 
 const App = () => {
@@ -40,6 +42,8 @@ const App = () => {
         <Route path="/panier" element={<Panier />} />
         <Route path="/recettes" element={<Recettes />} />
         <Route path="/recettes/:id" element={<Recette />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
 
         <Route element={<ProtectedPublicRoute />}>
           <Route path="/login" element={<Login />} />
