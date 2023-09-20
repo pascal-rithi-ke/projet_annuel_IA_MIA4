@@ -11,6 +11,15 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+user = os.getenv('MONGO_USER')
+password = os.getenv('MONGO_PASSWORD')
+#db_name = os.getenv('MONGO_DB_NAME')
+db_name = 'ExpressFood2' # à supprimer quand test terminé
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,8 +92,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'CLIENT': {
-            'host': 'mongodb+srv://admin:adminpasswordMongoDB77@cluster0.sp2ay.mongodb.net/?retryWrites=true&w=majority',
-            'name': 'ExpressFood2',
+            'host': f'mongodb+srv://{user}:{password}@cluster0.sp2ay.mongodb.net/?retryWrites=true&w=majority',
+            'name': db_name,
             'authMechanism': 'SCRAM-SHA-1', # Atlas requires this
         }
     }
