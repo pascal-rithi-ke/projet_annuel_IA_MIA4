@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { getToken } from "../../Modules/Auth/Repositories/user.localstore";
+import { getJWTObject } from "../../utils/getJwtObject";
 
 export const ProtectedRoute = ({
   authRole,
@@ -7,15 +8,15 @@ export const ProtectedRoute = ({
   children,
 }: any) => {
 
-  const token = getToken()
-  // decode token 
+  const token = getToken();
 
+  const tokenData = getJWTObject(token?.token || "");
 
   if (!token) {
     return <Navigate to={"/login"} replace />;
   }
 
-  if (token.role !== authRole) {
+  if (tokenData.role !== authRole) {
     return <Navigate to={redirectPath} replace />;
   }
 
