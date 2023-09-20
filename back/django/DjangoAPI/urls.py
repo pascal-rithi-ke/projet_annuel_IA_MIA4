@@ -1,5 +1,5 @@
 """
-URL configuration for ExpressFood project.
+URL configuration for DjangoAPI project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -14,11 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
-from . import views
+from django.contrib import admin
+from django.urls import include, re_path, path
+
 
 urlpatterns = [
-    path('', views.index),
-    # ... d'autres vues ...
-    # path('get_plats/', views.get_plats, name='get_plats'),
+    # Default URL
+    path('', include('ExpressFoodApp.urls')),
+    path('admin/', admin.site.urls),
+    
+    re_path(r'^', include('ExpressFoodApp.urls')),
 ]
