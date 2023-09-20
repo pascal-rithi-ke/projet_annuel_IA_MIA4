@@ -13,38 +13,28 @@ def index(request):
 
 #Plats
 @csrf_exempt
-def platApi(request, id=0):
+def platApi(request):
     if request.method == 'GET':
         plats = Plats.objects.all()
         plats_serializer = PlatsSerialize(plats, many=True)
         return JsonResponse(plats_serializer.data, safe=False)
-    if request.method == 'GET':
-        plats = Plats.objects.filter(id=id)
-        plats_serializer = PlatsSerialize(plats, many=True)
-        return JsonResponse(plats_serializer.data, safe=False)
     elif request.method == 'POST':
-        plat_data = JSONParser().parse(request)
-        plat_serializer = PlatsSerialize(data=plat_data)
-        if plat_serializer.is_valid():
-            plat_serializer.save()
+        plats_data = JSONParser().parse(request)
+        plats_serializer = PlatsSerialize(data=plats_data)
+        if plats_serializer.is_valid():
+            plats_serializer.save()
             return JsonResponse("Added Successfully", safe=False)
         return JsonResponse("Failed to Add", safe=False)
     elif request.method == 'PUT':
-        plat_data = JSONParser().parse(request)
-        try:
-            plat = Plats.objects.get(id=id)
-        except Plats.DoesNotExist:
-            return JsonResponse("Plats not found", status=404)
-        
-        plat_serializer = PlatsSerialize(plat, data=plat_data)
-        if plat_serializer.is_valid():
-            plat_serializer.save()
+        plats_data = JSONParser().parse(request)
+        plats = Plats.objects.get(id=plats_data['id'])
+        plats_serializer = PlatsSerialize(plats, data=plats_data)
+        if plats_serializer.is_valid():
+            plats_serializer.save()
             return JsonResponse("Updated Successfully", safe=False)
-        return JsonResponse("Failed to Update", safe=False)
+        return JsonResponse("Failed to Update")
     elif request.method == 'DELETE':
-        try:
-            plat = Plats.objects.get(id=id)
-            plat.delete()
-            return JsonResponse("Deleted Successfully", safe=False)
-        except Plats.DoesNotExist:
-            return JsonResponse("Plats not found", status=404)
+        plats_data = JSONParser().parse(request)
+        plats = Plats.objects.get(id=plats_data['id'])
+        plats.delete()
+        return JsonResponse("Deleted Successfully", safe=False)

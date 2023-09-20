@@ -83,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'CLIENT': {
-            'host': 'mongodb+srv://admin:adminpasswordMongoDB77@cluster0.sp2ay.mongodb.net/',
+            'host': 'mongodb+srv://admin:adminpasswordMongoDB77@cluster0.sp2ay.mongodb.net/?retryWrites=true&w=majority',
             'name': 'ExpressFood2',
             'authMechanism': 'SCRAM-SHA-1', # Atlas requires this
         }
