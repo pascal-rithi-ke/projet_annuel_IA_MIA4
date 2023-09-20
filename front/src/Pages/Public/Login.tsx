@@ -4,6 +4,7 @@ import { email, minLength, object, string } from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import { Button } from "../../Components/atoms/Button";
 import { SingIn } from "../../Modules/Auth/Services/SignIn";
+import React from "react";
 
 export const Login = () => {
     const LoginSchema = object({
@@ -16,10 +17,9 @@ export const Login = () => {
         ]),
     });
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit } = useForm({
         resolver: valibotResolver(LoginSchema),
     });
-    console.log(errors);
 
     const { SingInSubmit } = SingIn();
 
@@ -27,7 +27,12 @@ export const Login = () => {
         <section className="h-screen">
             <div className="max-w-xl mx-auto space-y-8 p-8 bg-white">
                 <h1 className="text-2xl md:text-3xl text-center">Connexion</h1>
-                <form className="flex flex-col space-y-6" onSubmit={handleSubmit(SingInSubmit)}>
+                <form
+                    className="flex flex-col space-y-6"
+                    onSubmit={
+                        handleSubmit(SingInSubmit)
+                    }
+                >
                     <input
                         {...register("email", { required: true })}
                         className="p-3 border border-gray-300 rounded"

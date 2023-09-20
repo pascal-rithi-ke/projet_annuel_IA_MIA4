@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { getToken } from "../../Modules/Auth/Repositories/user.localstore";
 
 export const ProtectedRoute = ({
   authRole,
@@ -6,10 +7,9 @@ export const ProtectedRoute = ({
   children,
 }: any) => {
 
-  // const token = {
-  //   role: 'user'
-  // }
-  const token = null
+  const token = getToken()
+  // decode token 
+
 
   if (!token) {
     return <Navigate to={"/login"} replace />;
