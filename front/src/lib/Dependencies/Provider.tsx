@@ -4,6 +4,7 @@ import { UsersRepositoriesReactQuery } from '../../Modules/User/React-query/User
 import { UsersRepositories } from '../../Modules/User/Repositories/User.repositories';
 import { RecettesRepositoriesReactQuery } from '../../Modules/Recette/React-query/Recette.repositories.react-query';
 import { RecettesInMemoryRepositories } from '../../Modules/Recette/Repositories/Recette.repositories.inmemory';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,6 +28,7 @@ export const Provider = ({ children }: { children: any }) => {
       }}>
         <QueryClientProvider client={queryClient}>
           {children}
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </DependenciesProvider>
     </>
