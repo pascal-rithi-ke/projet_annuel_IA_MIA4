@@ -6,10 +6,13 @@ export const ProtectedRoute = ({
   authRole,
   redirectPath = '/',
   children,
-}: any) => {
+}: {
+  authRole: number,
+  redirectPath?: string,
+  children?: any
+}) => {
 
   const token = getToken();
-
   const tokenData = getJWTObject(token?.token || "");
 
   if (!token) {

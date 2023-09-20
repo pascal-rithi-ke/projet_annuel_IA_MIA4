@@ -4,7 +4,6 @@ import { email, minLength, object, string } from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import { Button } from "../../Components/atoms/Button";
 import { SingIn } from "../../Modules/Auth/Services/SignIn";
-import React from "react";
 
 export const Login = () => {
     const LoginSchema = object({

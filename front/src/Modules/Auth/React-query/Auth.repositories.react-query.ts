@@ -21,6 +21,12 @@ export class AuthRepositoriesReactQuery implements IAuthRepositoriesReactQuery {
       (data) => this.authApiService.signIn(data.email, data.password), mutationOptions
     );
   }
-  // signUp(): Promise<any> {
-  // }
+  useSignUpMutation(
+    mutationOptions?: MutationOptions<Auth, Error, { email: string, password: string }, unknown>
+  ): UseMutationResult<Auth, Error, { email: string, password: string }, unknown> {
+
+    return useMutation<Auth, Error, { email: string, password: string }, unknown>(
+      (data) => this.authApiService.signUp(data.email, data.password), mutationOptions
+    );
+  }
 };

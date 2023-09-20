@@ -5,5 +5,7 @@ export interface IAuthRepositoriesReactQuery {
   useSignInMutation(
     mutationOptions?: MutationOptions<Auth, Error, { email: string, password: string }, unknown>
   ): UseMutationResult<Auth, Error, { email: string, password: string }, unknown>;
-  // signUp(): Promise<any>;
+  useSignUpMutation(
+    mutationOptions?: MutationOptions<Auth, Error, { email: string, password: string }, unknown>
+  ): UseMutationResult<Auth, Error, { email: string, password: string }, unknown>;
 }

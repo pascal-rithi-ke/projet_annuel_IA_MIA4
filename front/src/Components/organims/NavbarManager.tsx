@@ -1,6 +1,10 @@
+import { Logout } from "../../Modules/Auth/Services/Logout";
+import { isAuthentified } from "../../utils/auth";
 
 
 export const NavbarManager = () => {
+  const { logoutSubmit } = Logout();
+  const isAuth = isAuthentified();
 
   return (
     <div className="bg-white">
@@ -27,7 +31,7 @@ export const NavbarManager = () => {
                 </div>
               </div>
 
-              {true ? (
+              {!isAuth ? (
                 <div className="ml-auto flex items-center">
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                     <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">Sign in</a>
@@ -46,7 +50,7 @@ export const NavbarManager = () => {
                     <div className="mt-3 space-y-1 px-2">
                       <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
                       <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
-                      <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</a>
+                      <button onClick={logoutSubmit} className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</button>
                     </div>
                   </div>
                 </div>

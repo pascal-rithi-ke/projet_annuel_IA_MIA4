@@ -16,27 +16,31 @@ import { ProtectedRoute } from './lib/Router/ProtectedRoute'
 import { ProtectedPublicRoute } from './lib/Router/ProtectedPublicRoute'
 import { Navbar } from './Components/organims/Navbar'
 import { TemplateDefault } from './Components/templates/TemplateDefault'
+import { Role } from './Modules/Auth/Model/Role'
+import { NavbarManager } from './Components/organims/NavbarManager'
 
 
 const App = () => {
 
   return (
     <Routes>
-      <Route element={<TemplateDefault navbar={<Navbar />} />}>
-        <Route element={<ProtectedRoute authRole={"manager"} />}>
-          <Route path='/' element={<Dashbord />} />
+      <Route element={<TemplateDefault navbar={<NavbarManager />} />}>
+        <Route element={<ProtectedRoute authRole={Role.ADMIN} redirectPath='/dashbord' />}>
+          <Route path='/dashboard' element={<Dashbord />} />
           <Route path="/listClients" element={<ListClients />} />
           <Route path="/gestionRecettes" element={<GestionRecettes />} />
           <Route path="/client" element={<Client />} />
         </Route>
+      </Route>
 
-        <Route element={<ProtectedRoute authRole={"user"} />}>
+      <Route element={<TemplateDefault navbar={<Navbar />} />}>
+        <Route element={<ProtectedRoute authRole={Role.USER} />}>
           <Route path="/listcommande" element={<ListeCommande />} />
           <Route path="/commande" element={<Commande />} />
           <Route path="/payment" element={<Payment />} />
         </Route>
 
-        <Route index element={<Home />} />
+        <Route path='/' element={<Home />} />
         <Route path="/panier" element={<Panier />} />
         <Route path="/recettes" element={<Recettes />} />
         <Route path="/recettes/:id" element={<Recette />} />
@@ -46,6 +50,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
         </Route>
       </Route>
+
     </Routes >
   )
 }

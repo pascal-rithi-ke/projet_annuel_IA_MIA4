@@ -1,7 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
+import { Logout } from "../../Modules/Auth/Services/Logout";
+import { isAuthentified } from "../../utils/auth";
 
 export const Navbar = () => {
   const navigate = useNavigate();
+  const { logoutSubmit } = Logout();
+  const isAuth = isAuthentified();
+
+  console.log(isAuth);
 
   return (
     <div className="bg-white">
@@ -25,7 +31,7 @@ export const Navbar = () => {
                 </div>
               </div>
 
-              {true ? (
+              {!isAuth ? (
                 <div className="ml-auto flex items-center">
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                     <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">Sign in</Link>
@@ -44,7 +50,7 @@ export const Navbar = () => {
                     <div className="mt-3 space-y-1 px-2">
                       <Link to="/dashboard" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</Link>
                       <Link to="/settings" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</Link>
-                      <Link to="/logout" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</Link>
+                      <button onClick={logoutSubmit} className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</button>
                     </div>
                   </div>
                 </div>

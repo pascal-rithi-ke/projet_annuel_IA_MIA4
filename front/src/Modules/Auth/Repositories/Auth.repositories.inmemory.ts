@@ -15,8 +15,17 @@ export class AuthInMemoryRepositories implements IAuthRepositories {
       resolve({ token: auth.token });
     });
   }
-  // signUp(): Promise<any> {
-  // }
+  signUp(email: string, password: string): Promise<any> {
+    return new Promise<any>((resolve) => {
+      FakeAuthData.push({
+        id: FakeAuthData.length + 1,
+        email,
+        password,
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InV0aWxpc2F0ZXVyIiwiZW1haWwiOiJ1dGlsaXNhdGV1ckB5b3BtYWlsLmNvbSIsInJvbGUiOjB9.oQDhlLV_jObfWCSvHPKu85-zC0MPkJgQIOuOLPw7ZUw",
+      });
+      resolve(FakeAuthData);
+    });
+  }
 }
 
 const FakeAuthData = [
