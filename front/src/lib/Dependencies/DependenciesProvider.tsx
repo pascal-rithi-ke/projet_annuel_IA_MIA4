@@ -1,8 +1,10 @@
 import { createContext, useContext } from "react";
 import { IUsersRepositoriesReactQuery } from "../../Modules/User/Port/User.port.repositories.react-query";
+import { IRecettesRepositoriesReactQuery } from "../../Modules/Recette/Port/Recette.port.repositories.react-query";
 
 export type Dependencies = {
   usersService: IUsersRepositoriesReactQuery
+  recettesService: IRecettesRepositoriesReactQuery
 };
 
 const DependenciesContext = createContext<Dependencies>(null as any);
