@@ -6,9 +6,10 @@ export const ProtectedRoute = ({
   children,
 }: any) => {
 
-  const token = {
-    role: 'user'
-  }
+  // const token = {
+  //   role: 'user'
+  // }
+  const token = null
 
   if (!token) {
     return <Navigate to={"/login"} replace />;

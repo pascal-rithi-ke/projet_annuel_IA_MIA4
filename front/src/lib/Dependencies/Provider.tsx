@@ -5,6 +5,8 @@ import { UsersRepositories } from '../../Modules/User/Repositories/User.reposito
 import { RecettesRepositoriesReactQuery } from '../../Modules/Recette/React-query/Recette.repositories.react-query';
 import { RecettesInMemoryRepositories } from '../../Modules/Recette/Repositories/Recette.repositories.inmemory';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { AuthRepositoriesReactQuery } from '../../Modules/Auth/React-query/Auth.repositories.react-query';
+import { AuthInMemoryRepositories } from '../../Modules/Auth/Repositories/Auth.repositories.inmemory';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +26,8 @@ export const Provider = ({ children }: { children: any }) => {
     <>
       <DependenciesProvider dependencies={{
         usersService: new UsersRepositoriesReactQuery(new UsersRepositories()),
-        recettesService: new RecettesRepositoriesReactQuery(new RecettesInMemoryRepositories())
+        recettesService: new RecettesRepositoriesReactQuery(new RecettesInMemoryRepositories()),
+        AuthService: new AuthRepositoriesReactQuery(new AuthInMemoryRepositories())
       }}>
         <QueryClientProvider client={queryClient}>
           {children}
