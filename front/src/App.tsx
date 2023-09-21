@@ -16,6 +16,7 @@ import { Navbar } from './Components/organims/Navbar'
 import { TemplateDefault } from './Components/templates/TemplateDefault'
 import { Role } from './Modules/Auth/Model/Role'
 import { NavbarManager } from './Components/organims/NavbarManager'
+import { Panier } from './Pages/Public/Panier'
 
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path="/recettes" element={<Recettes />} />
         <Route path="/recettes/:id" element={<Recette />} />
+        <Route path="/panier" element={<Panier />} />
 
         <Route element={<ProtectedPublicRoute />}>
           <Route path="/login" element={<Login />} />

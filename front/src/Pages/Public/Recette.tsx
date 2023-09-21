@@ -10,9 +10,6 @@ export const Recette = () => {
   const { recettesService, CartService } = useDependencies()
   const { data } = recettesService.useGetIdRecetteQuery(Number(id))
   const { mutateAsync } = CartService.useAddToCartsMutation({
-    onSuccess: (data) => {
-      // console.log(data)
-    },
     onError: (error) => {
       console.log(error)
     }
@@ -20,10 +17,9 @@ export const Recette = () => {
 
   const SubmitCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log("renderrrrr");
-
     mutateAsync({ id: String(data?.id), quantity })
   }
+
   return (
     <>
       <section className="w-full py-12 md:py-24 lg:py-32">

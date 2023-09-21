@@ -34,8 +34,9 @@ export class CartInMemoryRepositories implements ICartRepositories {
 
       if (cartItem) {
         cartItem.quantity = quantity;
+        cartItem.price = recette.price * quantity;
       } else {
-        cartItem = { ...recette, quantity };
+        cartItem = { ...recette, quantity, price: recette.price * quantity };
         this.cartMap.set(id, cartItem);
       }
       resolve({ ...cartItem });

@@ -19,4 +19,8 @@ export interface ICartRepositoriesReactQuery {
     mutationOptions?: MutationOptions<Cart, Error, { id: string, quantity: number }, unknown>
   ): UseMutationResult<Cart, Error, { id: string, quantity: number }, unknown>;
 
+  useRemoveFromCartsMutation(
+    mutationOptions?: MutationOptions<Cart, Error, { id: string }, unknown>
+  ): UseMutationResult<Cart, Error, { id: string }, unknown>;
+
 }

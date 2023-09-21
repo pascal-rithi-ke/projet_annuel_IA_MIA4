@@ -27,4 +27,12 @@ export class CartRepositoriesReactQuery implements ICartRepositoriesReactQuery {
       (data) => this.cartApiService.addToCart(data.id, data.quantity), mutationOptions
     );
   }
+  useRemoveFromCartsMutation(
+    mutationOptions?: MutationOptions<Cart, Error, { id: string }, unknown>
+  ): UseMutationResult<Cart, Error, { id: string }, unknown> {
+
+    return useMutation<Cart, Error, { id: string }, unknown>(
+      (data) => this.cartApiService.removeFromCart(data.id), mutationOptions
+    );
+  }
 }
