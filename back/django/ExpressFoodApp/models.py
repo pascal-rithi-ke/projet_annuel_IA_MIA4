@@ -24,3 +24,4 @@ class Commande(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     livreur = models.ForeignKey(Livreur, on_delete=models.CASCADE)
     plat = models.ForeignKey(Plats, on_delete=models.CASCADE)
+    status = models.CharField(max_length=100, default='')
