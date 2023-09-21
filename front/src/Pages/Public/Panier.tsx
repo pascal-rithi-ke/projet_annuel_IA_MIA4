@@ -19,7 +19,6 @@ export const Panier = () => {
       console.log(error)
     }
   })
-  console.log(data);
 
   return (
     <div>
@@ -27,7 +26,7 @@ export const Panier = () => {
         <h2 className="font-medium text-lg">Résumé de votre commande</h2>
         <div className="flex justify-between bg-white border border-gray-300 rounded-lg">
           <ul className="w-4/12">
-            {data?.map(recette => (
+            {data?.paniers?.map(recette => (
               <li className="border-b last:border-b-0 border-gray-300 flex p-6">
                 <div className="shrink-0 w-72 h-72">
                   <img src={recette.image} alt="Plat" />
@@ -63,15 +62,15 @@ export const Panier = () => {
             <div className="border-y border-gray-300 p-6 space-y-6">
               <div className="flex justify-between items-center">
                 <p className="font-medium">Sous-total</p>
-                <p className="font-medium">10,00 €</p>
+                <p className="font-medium">{data?.soustotal} €</p>
               </div>
               <div className="flex justify-between items-center">
                 <p className="font-medium">Livraison</p>
-                <p className="font-medium">3,00 €</p>
+                <p className="font-medium">{data?.livraison} €</p>
               </div>
               <div className="border-t border-gray-300 flex justify-between items-center pt-6">
                 <p className="font-semibold">Total</p>
-                <p className="font-semibold">13,00 €</p>
+                <p className="font-semibold">{data?.total} €</p>
               </div>
             </div>
             <div className="p-6">

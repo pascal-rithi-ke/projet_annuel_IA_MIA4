@@ -1,9 +1,10 @@
-import { Cart } from "../Model/Cart.model";
+import { Recette } from "../../Recette/Model/Recette.model";
+import { Cart, Panier } from "../Model/Cart.model";
 import { ICartRepositories } from "../Port/Cart.port.repositories";
 
 export class CartInMemoryRepositories implements ICartRepositories {
-  private cartMap: Map<string, Cart> = new Map<string, Cart>();
-  private recetteMap: Map<string, Cart> = new Map<string, Cart>();
+  private cartMap: Map<string, Panier> = new Map<string, Panier>();
+  private recetteMap: Map<string, Recette> = new Map<string, Recette>();
 
   constructor() {
     this.initializeFakeData();
@@ -15,15 +16,26 @@ export class CartInMemoryRepositories implements ICartRepositories {
     }
   }
 
-  getAll(): Promise<Cart[]> {
-    return new Promise<Cart[]>((resolve) => {
+  getAll(): Promise<Cart> {
+    return new Promise<Cart>((resolve) => {
       const cartArray = Array.from(this.cartMap.values());
-      resolve(cartArray);
+
+      const total = cartArray.reduce((acc, item) => acc + item.price, 0);
+      const livraison = total > 19.99 ? 0 : 5;
+      const soustotal = total + livraison;
+
+      const cart: Cart = {
+        paniers: cartArray,
+        total,
+        livraison,
+        soustotal,
+      };
+      resolve(cart);
     });
   }
 
-  addToCart(id: string, quantity: number): Promise<Cart> {
-    return new Promise<Cart>((resolve) => {
+  addToCart(id: string, quantity: number): Promise<String> {
+    return new Promise<String>((resolve) => {
       const recette = this.recetteMap.get(id);
 
       if (!recette) {
@@ -39,12 +51,12 @@ export class CartInMemoryRepositories implements ICartRepositories {
         cartItem = { ...recette, quantity, price: recette.price * quantity };
         this.cartMap.set(id, cartItem);
       }
-      resolve({ ...cartItem });
+      resolve("added");
     });
   }
 
-  removeFromCart(id: string): Promise<Cart> {
-    return new Promise<Cart>((resolve) => {
+  removeFromCart(id: string): Promise<String> {
+    return new Promise<String>((resolve) => {
       const cartItem = this.cartMap.get(id);
 
       if (!cartItem) {
@@ -53,7 +65,7 @@ export class CartInMemoryRepositories implements ICartRepositories {
 
       this.cartMap.delete(id);
 
-      resolve({ ...cartItem });
+      resolve("removed");
     });
   }
 

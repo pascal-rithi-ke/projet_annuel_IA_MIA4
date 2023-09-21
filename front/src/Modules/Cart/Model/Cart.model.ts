@@ -3,7 +3,7 @@ enum RecetteType {
   DESSERT,
 }
 
-export interface Cart {
+export interface Panier {
   id: string;
   name: string;
   description: string;
@@ -12,4 +12,10 @@ export interface Cart {
   quantity: number;
   available: boolean;
   type: RecetteType;
+}
+export interface Cart {
+  paniers: Panier[];
+  total: number;
+  soustotal: number;
+  livraison: number;
 }

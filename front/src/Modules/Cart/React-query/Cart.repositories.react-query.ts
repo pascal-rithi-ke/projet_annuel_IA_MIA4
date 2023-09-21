@@ -14,24 +14,24 @@ export class CartRepositoriesReactQuery implements ICartRepositoriesReactQuery {
   }
 
   useGetAllCartsQuery(
-    queryOptions?: Omit<UseQueryOptions<Cart[], Error, Cart[], QueryKey>, "queryKey" | "queryFn"> | undefined
-  ): UseQueryResult<Cart[], Error> {
-    return useQuery<Cart[], Error>(["CartService.getAll"], () => this.cartApiService.getAll(), queryOptions);
+    queryOptions?: Omit<UseQueryOptions<Cart, Error, Cart, QueryKey>, "queryKey" | "queryFn"> | undefined
+  ): UseQueryResult<Cart, Error> {
+    return useQuery<Cart, Error>(["CartService.getAll"], () => this.cartApiService.getAll(), queryOptions);
   }
 
   useAddToCartsMutation(
-    mutationOptions?: MutationOptions<Cart, Error, { id: string, quantity: number }, unknown>
-  ): UseMutationResult<Cart, Error, { id: string, quantity: number }, unknown> {
+    mutationOptions?: MutationOptions<String, Error, { id: string, quantity: number }, unknown>
+  ): UseMutationResult<String, Error, { id: string, quantity: number }, unknown> {
 
-    return useMutation<Cart, Error, { id: string, quantity: number }, unknown>(
+    return useMutation<String, Error, { id: string, quantity: number }, unknown>(
       (data) => this.cartApiService.addToCart(data.id, data.quantity), mutationOptions
     );
   }
   useRemoveFromCartsMutation(
-    mutationOptions?: MutationOptions<Cart, Error, { id: string }, unknown>
-  ): UseMutationResult<Cart, Error, { id: string }, unknown> {
+    mutationOptions?: MutationOptions<String, Error, { id: string }, unknown>
+  ): UseMutationResult<String, Error, { id: string }, unknown> {
 
-    return useMutation<Cart, Error, { id: string }, unknown>(
+    return useMutation<String, Error, { id: string }, unknown>(
       (data) => this.cartApiService.removeFromCart(data.id), mutationOptions
     );
   }
