@@ -1,10 +1,10 @@
-enum RecetteType {
+export enum RecetteType {
   PLAT,
   DESSERT,
 }
 
 export interface Recette {
-  id: number;
+  id: string;
   name: string;
   description: string;
   image: string;
