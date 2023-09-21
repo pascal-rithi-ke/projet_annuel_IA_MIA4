@@ -8,8 +8,6 @@ import { Client } from './Pages/Private/Manager/Client'
 import { Route, Routes } from 'react-router-dom'
 import { Login } from './Pages/Public/Login'
 import { Commande } from './Pages/Private/User/Commande'
-import { Payment } from './Pages/Private/User/Payment'
-import { Panier } from './Pages/Public/Panier'
 import { Recettes } from './Pages/Public/Recettes'
 import { Recette } from './Pages/Public/Recette'
 import { ProtectedRoute } from './lib/Router/ProtectedRoute'
@@ -37,11 +35,9 @@ const App = () => {
         <Route element={<ProtectedRoute authRole={Role.USER} />}>
           <Route path="/listcommande" element={<ListeCommande />} />
           <Route path="/commande" element={<Commande />} />
-          <Route path="/payment" element={<Payment />} />
         </Route>
 
         <Route path='/' element={<Home />} />
-        <Route path="/panier" element={<Panier />} />
         <Route path="/recettes" element={<Recettes />} />
         <Route path="/recettes/:id" element={<Recette />} />
 
@@ -50,7 +46,6 @@ const App = () => {
           <Route path="/register" element={<Register />} />
         </Route>
       </Route>
-
     </Routes >
   )
 }

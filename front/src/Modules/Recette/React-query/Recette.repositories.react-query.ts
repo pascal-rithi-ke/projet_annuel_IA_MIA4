@@ -9,8 +9,7 @@ import { IRecetteRepositories } from "../Port/Recette.port.repositories";
 import { Recette } from "../Model/Recette.model";
 
 export class RecettesRepositoriesReactQuery
-  implements IRecettesRepositoriesReactQuery
-{
+  implements IRecettesRepositoriesReactQuery {
   private readonly recettesApiService: IRecetteRepositories;
 
   constructor(RecettesApiService: IRecetteRepositories) {
@@ -29,4 +28,13 @@ export class RecettesRepositoriesReactQuery
       queryOptions
     );
   }
+
+  useGetIdRecetteQuery(
+    id: number,
+    queryOptions?: Omit<UseQueryOptions<Recette, Error, Recette, QueryKey>, 'queryKey' | 'queryFn'>
+  ): UseQueryResult<Recette, Error> {
+
+    return useQuery<Recette, Error>(['UsersService.getById', id], () => this.recettesApiService.getId(id), queryOptions);
+  }
+
 }

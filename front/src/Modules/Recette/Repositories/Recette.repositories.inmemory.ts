@@ -7,9 +7,19 @@ export class RecettesInMemoryRepositories implements IRecetteRepositories {
       resolve(FakeRecetteData);
     });
   }
+  getId(id: number): Promise<Recette> {
+    return new Promise<Recette>((resolve) => {
+      const recette = FakeRecetteData.find((recette) => recette.id === id);
+
+      if (!recette) {
+        throw new Error("Recette introuvable");
+      }
+      resolve(recette);
+    });
+  }
 }
 
-const FakeRecetteData = [
+export const FakeRecetteData = [
   {
     id: 1,
     name: "Recette 1",

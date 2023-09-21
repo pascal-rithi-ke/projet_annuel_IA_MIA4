@@ -7,7 +7,6 @@ export const Navbar = () => {
   const { logoutSubmit } = Logout();
   const isAuth = isAuthentified();
 
-  console.log(isAuth);
 
   return (
     <div className="bg-white">
