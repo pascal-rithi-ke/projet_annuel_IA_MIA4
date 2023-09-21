@@ -7,6 +7,34 @@ export class RecettesInMemoryRepositories implements IRecetteRepositories {
       resolve(FakeRecetteData);
     });
   }
+  edit(recette: Recette): Promise<Recette> {
+    return new Promise<Recette>((resolve) => {
+      const recetteToEdit = FakeRecetteData.find((r) => r.id === recette.id);
+
+      if (recetteToEdit) {
+        recetteToEdit.name = recette.name;
+        recetteToEdit.description = recette.description;
+        recetteToEdit.image = recette.image;
+        recetteToEdit.price = recette.price;
+        recetteToEdit.quantity = recette.quantity;
+        recetteToEdit.available = recette.available;
+        recetteToEdit.type = recette.type;
+
+        resolve(recetteToEdit);
+      }
+    });
+  }
+  delete(recetteId: string): Promise<Recette> {
+    return new Promise<Recette>((resolve) => {
+      const recetteToDelete = FakeRecetteData.find((r) => r.id === recetteId);
+
+      if (recetteToDelete) {
+        FakeRecetteData.splice(FakeRecetteData.indexOf(recetteToDelete), 1);
+
+        resolve(recetteToDelete);
+      }
+    });
+  }
 }
 
 const FakeRecetteData: Recette[] = [

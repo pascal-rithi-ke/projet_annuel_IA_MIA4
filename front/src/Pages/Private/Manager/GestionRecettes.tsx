@@ -51,10 +51,11 @@ export const GestionRecettes = () => {
     setIsEditing(true);
   }
 
-  const editRecette = (data: Partial<Recette>) => {
-    console.log("Modification à faire sur :", data);
+  const { mutate: updateRecetteMutation } = recettesService.useUpdateRecetteMutation();
 
-    // recettesService.updateRecette(data);
+  const editRecette = (data: Partial<Recette>) => {
+    if (!recetteToEdit) return;
+    updateRecetteMutation({ ...recetteToEdit, ...data });
   }
 
   const closeEditingModal = (resetForm: UseFormReset<any>) => {
@@ -69,8 +70,11 @@ export const GestionRecettes = () => {
     setIsDeleting(true);
   }
 
+  const { mutate: deleteRecetteMutation } = recettesService.useDeleteRecetteMutation();
+
   const deleteRecette = (recetteId: string | undefined) => {
-    console.log("Recette à supprimer :", recetteId);
+    if (!recetteToDelete) return;
+    deleteRecetteMutation(recetteToDelete);
   }
 
   const closeDeleteModal = () => {
