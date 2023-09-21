@@ -9,9 +9,9 @@ export class RecettesInMemoryRepositories implements IRecetteRepositories {
   }
 }
 
-const FakeRecetteData = [
+const FakeRecetteData: Recette[] = [
   {
-    id: 1,
+    id: "1",
     name: "Recette 1",
     description: "Description 1",
     image:
@@ -22,7 +22,7 @@ const FakeRecetteData = [
     type: 0,
   },
   {
-    id: 2,
+    id: "2",
     name: "Recette 2",
     description: "Description 2",
     image:
@@ -33,7 +33,7 @@ const FakeRecetteData = [
     type: 1,
   },
   {
-    id: 3,
+    id: "3",
     name: "Recette 3",
     description: "Description 3",
     image:
@@ -44,7 +44,7 @@ const FakeRecetteData = [
     type: 1,
   },
   {
-    id: 4,
+    id: "4",
     name: "Recette 4",
     description: "Description 4",
     image:

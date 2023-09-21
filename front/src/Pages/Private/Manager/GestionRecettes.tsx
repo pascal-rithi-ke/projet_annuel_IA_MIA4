@@ -39,14 +39,14 @@ export const GestionRecettes = () => {
   const { data: recettes } = recettesService.useGetAllRecettesQuery();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [recetteToEditId, setRecetteToEditId] = useState<number | null>(null);
+  const [recetteToEditId, setRecetteToEditId] = useState<string | null>(null);
   const recetteToEdit = recettes?.find((recette) => recette.id === recetteToEditId);
 
   const [isDeleting, setIsDeleting] = useState(false);
-  const [recetteToDeleteId, setRecetteToDeleteId] = useState<number | null>(null);
+  const [recetteToDeleteId, setRecetteToDeleteId] = useState<string | null>(null);
   const recetteToDelete = recettes?.find((recette) => recette.id === recetteToDeleteId);
 
-  const openEditingModal = (recetteId: number) => {
+  const openEditingModal = (recetteId: string) => {
     setRecetteToEditId(recetteId);
     setIsEditing(true);
   }
@@ -64,12 +64,12 @@ export const GestionRecettes = () => {
     resetForm();
   }
 
-  const openDeleteModal = (recetteId: number) => {
+  const openDeleteModal = (recetteId: string) => {
     setRecetteToDeleteId(recetteId);
     setIsDeleting(true);
   }
 
-  const deleteRecette = (recetteId: number | undefined) => {
+  const deleteRecette = (recetteId: string | undefined) => {
     console.log("Recette à supprimer :", recetteId);
   }
 
