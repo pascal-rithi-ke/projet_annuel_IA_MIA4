@@ -1,4 +1,5 @@
 from django.db import models
+from djongo import models as djongomodels
 
 # Create your models here.
 class Plats(models.Model):

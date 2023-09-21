@@ -5,18 +5,43 @@ from django.http.response import JsonResponse, HttpResponse
 from ExpressFoodApp.models import *
 from ExpressFoodApp.serializers import *
 
+# Utilisation de pymongo pour la gestion des requetes spéciales + avec id
+import pymongo
+from bson.objectid import ObjectId
+from dotenv import load_dotenv
+import os
+
+# Load env variables
+load_dotenv()
+
+user = os.getenv("MONGO_USER")
+password = os.getenv("MONGO_PASSWORD")
+host = os.getenv("MONGO_HOST")
+db_name = os.getenv('MONGO_DTB_NAME')
+
+db_collect_plats = os.getenv('MONGO_DTB_COLLECT_PLATS')
+db_collect_clients = os.getenv('MONGO_DTB_COLLECT_CLIENTS')
+db_collect_cmd = os.getenv('MONGO_DTB_COLLECT_CMD')
+db_collect_livreurs = os.getenv('MONGO_DTB_COLLECT_LIVREURS')
+
+# Connection to MngoDB
+uri = f'mongodb+srv://{user}:{password}@{host}/'
+
 # Default page
 def index(request):
     return HttpResponse("API is running")
 
+# Plat CRUD
 @csrf_exempt
+# get a plat
 def plat(request, id):
-    if request.method == 'GET':
-        plat = Plats.objects.get(id=id)
-        plat_serializer = PlatsSerialize(plat)
-        return JsonResponse(plat_serializer.data, safe=False)
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_plats]
+    plat = collection.find_one({"_id": ObjectId(id)})
+    plat['_id'] = str(plat['_id'])
+    return JsonResponse(plat, safe=False)
 
-''' Plats - CRUD '''
 def platCRUD(request):
 # get all plats
     if request.method == 'GET':
@@ -48,25 +73,23 @@ def platCRUD(request):
         return JsonResponse("Deleted Successfully", safe=False)
 
 
+#Livreur - CRUD
 @csrf_exempt
+# get a livreur
 def livreur(request, id):
-    if request.method == 'GET':
-        livreur = Livreur.objects.get(id=id)
-        livreur_serializer = LivreurSerialize(livreur)
-        return JsonResponse(livreur_serializer.data, safe=False)
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_livreurs]
+    livreur = collection.find_one({"_id": ObjectId(id)})
+    livreur['_id'] = str(livreur['_id'])
+    return JsonResponse(livreur, safe=False)
 
-''' Livreur - CRUD '''
 def livreurCRUD(request):
 # get all livreurs
     if request.method == 'GET':
         livreurs = Livreur.objects.all()
         livreurs_serializer = LivreurSerialize(livreurs, many=True)
         return JsonResponse(livreurs_serializer.data, safe=False)
-# get a livreur
-    if request.method == 'GET':
-        livreur = Livreur.objects.get(id=id)
-        livreur_serializer = LivreurSerialize(livreur)
-        return JsonResponse(livreur_serializer.data, safe=False)
 # add a livreur
     elif request.method == 'POST':
         livreurs_data = JSONParser().parse(request)
@@ -91,15 +114,17 @@ def livreurCRUD(request):
         livreurs.delete()
         return JsonResponse("Deleted Successfully", safe=False)
 
-
+#Client - CRUD
 @csrf_exempt
+# get a client
 def client(request, id):
-    if request.method == 'GET':
-        client = Client.objects.get(id=id)
-        client_serializer = ClientSerialize(client)
-        return JsonResponse(client_serializer.data, safe=False)
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_clients]
+    client = collection.find_one({"_id": ObjectId(id)})
+    client['_id'] = str(client['_id'])
+    return JsonResponse(client, safe=False)
 
-''' Client - CRUD '''
 def clientCRUD(request):
 # get all clients
     if request.method == 'GET':
@@ -136,16 +161,17 @@ def clientCRUD(request):
         return JsonResponse("Deleted Successfully", safe=False)
     
     
-''' Commande '''
+#Commande - CRUD
 @csrf_exempt
-# get a commande & update status adter 5 seconds
+# get a commande
 def commande(request, id):
-    if request.method == 'GET':
-        commande = Commande.objects.get(id=id)
-        commande_serializer = CommandeSerialize(commande)
-        return JsonResponse(commande_serializer.data, safe=False)
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_cmd]
+    commande = collection.find_one({"_id": ObjectId(id)})
+    commande['_id'] = str(commande['_id'])
+    return JsonResponse(commande, safe=False)
     
-''' Commande - CRUD '''
 def commandeCRUD(request):
 # get all commandes
     if request.method == 'GET':
