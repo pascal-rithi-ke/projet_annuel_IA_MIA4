@@ -14,6 +14,7 @@ export interface IRecettesRepositoriesReactQuery {
       "queryKey" | "queryFn"
     >
   ): UseQueryResult<Recette[], Error>;
+  useGetIdRecetteQuery(id: string, queryOptions?: Omit<UseQueryOptions<Recette, Error, Recette, QueryKey>, 'queryKey' | 'queryFn'>): UseQueryResult<Recette, Error>;
 
   useUpdateRecetteMutation(
     mutationOptions?: MutationOptions<Recette, Error, Recette, unknown>

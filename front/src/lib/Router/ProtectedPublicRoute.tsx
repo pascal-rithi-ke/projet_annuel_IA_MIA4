@@ -1,13 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getToken } from "../../Modules/Auth/Repositories/user.localstore";
+import { isAuthentified } from "../../utils/auth";
 
 export const ProtectedPublicRoute = ({
   children,
 }: any) => {
 
-  const token = getToken()
-
-  if (token) {
+  if (isAuthentified()) {
     return <Navigate to={"/"} replace />;
   }
 

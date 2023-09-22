@@ -8,8 +8,6 @@ import { Client } from './Pages/Private/Manager/Client'
 import { Route, Routes } from 'react-router-dom'
 import { Login } from './Pages/Public/Login'
 import { Commande } from './Pages/Private/User/Commande'
-import { Payment } from './Pages/Private/User/Payment'
-import { Panier } from './Pages/Public/Panier'
 import { Recettes } from './Pages/Public/Recettes'
 import { Recette } from './Pages/Public/Recette'
 import { ProtectedRoute } from './lib/Router/ProtectedRoute'
@@ -18,6 +16,7 @@ import { Navbar } from './Components/organims/Navbar'
 import { TemplateDefault } from './Components/templates/TemplateDefault'
 import { Role } from './Modules/Auth/Model/Role'
 import { NavbarManager } from './Components/organims/NavbarManager'
+import { Panier } from './Pages/Public/Panier'
 
 
 const App = () => {
@@ -37,20 +36,18 @@ const App = () => {
         <Route element={<ProtectedRoute authRole={Role.USER} />}>
           <Route path="/listcommande" element={<ListeCommande />} />
           <Route path="/commande" element={<Commande />} />
-          <Route path="/payment" element={<Payment />} />
         </Route>
 
         <Route path='/' element={<Home />} />
-        <Route path="/panier" element={<Panier />} />
         <Route path="/recettes" element={<Recettes />} />
         <Route path="/recettes/:id" element={<Recette />} />
+        <Route path="/panier" element={<Panier />} />
 
         <Route element={<ProtectedPublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
       </Route>
-
     </Routes >
   )
 }
