@@ -1,7 +1,21 @@
 import { useParams } from "react-router-dom"
 import { useDependencies } from "../../lib/Dependencies/DependenciesProvider"
 import React from "react"
+import toast, { Toaster } from 'react-hot-toast';
 
+const notify = () => toast.success('Le produit a été ajouté au panier', {
+  duration: 4000,
+  position: 'top-right',
+  style: {
+    border: '1px solid #713200',
+    padding: '16px',
+    color: '#713200',
+  },
+  iconTheme: {
+    primary: '#713200',
+    secondary: '#FFFAEE',
+  },
+})
 
 export const Recette = () => {
   const { id } = useParams()
@@ -10,6 +24,9 @@ export const Recette = () => {
   const { recettesService, CartService } = useDependencies()
   const { data } = recettesService.useGetIdRecetteQuery(String(id))
   const { mutateAsync } = CartService.useAddToCartsMutation({
+    onSuccess: () => {
+      notify()
+    },
     onError: (error) => {
       console.log(error)
     }
@@ -22,6 +39,7 @@ export const Recette = () => {
 
   return (
     <>
+      <Toaster />
       <section className="w-full py-12 md:py-24 lg:py-32">
         <div className="container flex items-start gap-8 px-4 md:px-6">
           <img
