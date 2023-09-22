@@ -1,7 +1,7 @@
 import { Register } from './Pages/Public/Register'
 import { Home } from './Pages/Public/Home'
 import { ListeCommande } from './Pages/Private/User/ListeCommande'
-import { Dashbord } from './Pages/Private/Manager/Dashbord'
+import { Dashboard } from './Pages/Private/Manager/Dashboard'
 import { ListClients } from './Pages/Private/Manager/ListClients'
 import { GestionRecettes } from './Pages/Private/Manager/GestionRecettes'
 import { Client } from './Pages/Private/Manager/Client'
@@ -24,8 +24,8 @@ const App = () => {
   return (
     <Routes>
       <Route element={<TemplateDefault navbar={<NavbarManager />} />}>
-        <Route element={<ProtectedRoute authRole={Role.ADMIN} redirectPath='/dashbord' />}>
-          <Route path='/dashboard' element={<Dashbord />} />
+        <Route element={<ProtectedRoute authRole={Role.ADMIN} redirectPath='/dashboard' />}>
+          <Route path='/dashboard' element={<Dashboard />} />
           <Route path="/listClients" element={<ListClients />} />
           <Route path="/gestionRecettes" element={<GestionRecettes />} />
           <Route path="/client" element={<Client />} />
