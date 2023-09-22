@@ -295,24 +295,23 @@ def commandeCRUD(request):
 # add a commande
     elif request.method == 'POST':
         commandes_data = JSONParser().parse(request)
-        #available_livreurs = list(collection_livreurs.find({"availability": True}))
-        #if not available_livreurs:
-        #    return JsonResponse("No available livreurs", safe=False)
+        available_livreurs = list(collection_livreurs.find({"availability": True}))
+        if not available_livreurs:
+            return JsonResponse("No available livreurs", safe=False)
         # Choisissez aléatoirement un livreur parmi les livreurs disponibles
-        #selected_livreur = random.choice(available_livreurs)
+        selected_livreur = random.choice(available_livreurs)
         # Mettez à jour le statut du livreur sélectionné à False
-        #collection_livreurs.update_one(
-        #    {"_id": selected_livreur["_id"]},
-        #    {"$set": {"availability": False}}
-        #)
+        collection_livreurs.update_one(
+            {"_id": selected_livreur["_id"]},
+            {"$set": {"availability": False}}
+        )
         # Ajoutez la commande en associant le livreur sélectionné
-        #commandes_data["livreur_id"] = str(selected_livreur["_id"])
-        #collection.insert_one(commandes_data)
-        
+        commandes_data["livreur"] = selected_livreur["_id"]
+        collection.insert_one(commandes_data)
+
         # Planifiez la tâche pour mettre à jour le statut après 20 minutes
         #update_order_and_driver_status(str(commandes_data["_id"]),str(selected_livreur["_id"]),schedule=10)
-        
-        return JsonResponse(commandes_data, safe=False)
+        return JsonResponse("Added Successfully", safe=False)
     
 # update a commande
     elif request.method == 'PUT':
