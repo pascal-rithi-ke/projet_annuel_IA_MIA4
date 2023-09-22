@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom"
 import { Logout } from "../../Modules/Auth/Services/Logout";
 import { isAuthentified } from "../../utils/auth";
-
 
 export const NavbarManager = () => {
   const { logoutSubmit } = Logout();
@@ -14,18 +14,18 @@ export const NavbarManager = () => {
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
               <div className="ml-4 flex lg:ml-0">
-                <a href="#">
+                <Link to="/dashboard">
                   <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-                </a>
+                </Link>
               </div>
               <div className="hidden lg:ml-8 lg:block lg:self-stretch">
                 <div className="flex h-full space-x-8">
                   <div className="flex gap-3">
                     <div className="relative flex">
-                      <button type="button" className="border-transparent text-gray-700 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out" aria-expanded="false">Clients</button>
+                      <Link to="/listClients" className="border-transparent text-gray-700 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out" aria-expanded="false">Clients</Link>
                     </div>
                     <div className="relative flex">
-                      <button type="button" className="border-transparent text-gray-700 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out" aria-expanded="false">Gestion Recettes</button>
+                      <Link to="/gestionRecettes" className="border-transparent text-gray-700 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out" aria-expanded="false">Gestion Recettes</Link>
                     </div>
                   </div>
                 </div>
@@ -34,9 +34,9 @@ export const NavbarManager = () => {
               {!isAuth ? (
                 <div className="ml-auto flex items-center">
                   <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">Sign in</a>
+                    <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">Sign in</Link>
                     <span className="h-6 w-px bg-gray-200" aria-hidden="true"></span>
-                    <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">Create account</a>
+                    <Link to="/register" className="text-sm font-medium text-gray-700 hover:text-gray-800">Create account</Link>
                   </div>
                 </div>
               ) : (
@@ -48,8 +48,9 @@ export const NavbarManager = () => {
                       </div>
                     </div>
                     <div className="mt-3 space-y-1 px-2">
-                      <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
-                      <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
+                      {/* TODO: only keep logout button */}
+                      <Link to="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</Link>
+                      <Link to="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</Link>
                       <button onClick={logoutSubmit} className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</button>
                     </div>
                   </div>
@@ -82,20 +83,20 @@ const MobileMenu = () => {
 
           <div className="space-y-6 border-t border-gray-200 px-4 py-6">
             <div className="flow-root">
-              <a href="#" className="-m-2 block p-2 font-medium text-gray-900">Clients</a>
+              <Link to="/listClients" className="-m-2 block p-2 font-medium text-gray-900">Clients</Link>
             </div>
           </div>
           <div className="space-y-6 border-t border-gray-200 px-4 py-6">
             <div className="flow-root">
-              <a href="#" className="-m-2 block p-2 font-medium text-gray-900">Gestion Recettes</a>
+              <Link to="/gestionRecettes" className="-m-2 block p-2 font-medium text-gray-900">Gestion Recettes</Link>
             </div>
           </div>
           <div className="space-y-6 border-t border-gray-200 px-4 py-6">
             <div className="flow-root">
-              <a href="#" className="-m-2 block p-2 font-medium text-gray-900">Sign in</a>
+              <Link to="/login" className="-m-2 block p-2 font-medium text-gray-900">Sign in</Link>
             </div>
             <div className="flow-root">
-              <a href="#" className="-m-2 block p-2 font-medium text-gray-900">Create account</a>
+              <Link to="/register" className="-m-2 block p-2 font-medium text-gray-900">Create account</Link>
             </div>
           </div>
         </div>
