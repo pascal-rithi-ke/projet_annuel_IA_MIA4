@@ -15,14 +15,16 @@ class Livreur(models.Model):
     availability = models.BooleanField(default=True)
     location = models.CharField(max_length=100, default='Paris, ile de france')
 
-class Client(models.Model):
+class Users(models.Model):
     name = models.CharField(max_length=100, default='')
     email = models.CharField(max_length=100, default='')
     password = models.CharField(max_length=100, default='')
+    #status en in
+    status = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         self.password = make_password(self.password)
-        super(Client, self).save(*args, **kwargs)
+        super(Users, self).save(*args, **kwargs)
 
 #class Commande(models.Model):
 #    date = models.DateField(auto_now_add=True, blank=True)

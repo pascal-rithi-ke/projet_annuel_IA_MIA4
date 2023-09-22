@@ -11,9 +11,9 @@ class LivreurSerialize(serializers.ModelSerializer):
         model = Livreur
         fields = '__all__'
 
-class ClientSerialize(serializers.ModelSerializer):
+class UserSerialize(serializers.ModelSerializer):
     class Meta:
-        model = Client
+        model = Users
         fields = '__all__'
 
 #class PanierSerialize(serializers.ModelSerializer):

@@ -25,7 +25,7 @@ host = os.getenv("MONGO_HOST")
 db_name = os.getenv('MONGO_DTB_NAME')
 
 db_collect_plats = os.getenv('MONGO_DTB_COLLECT_PLATS')
-db_collect_clients = os.getenv('MONGO_DTB_COLLECT_CLIENTS')
+db_collect_users = os.getenv('MONGO_DTB_COLLECT_USERS')
 db_collect_cmd = os.getenv('MONGO_DTB_COLLECT_CMD')
 db_collect_livreurs = os.getenv('MONGO_DTB_COLLECT_LIVREURS')
 db_collect_panier = os.getenv('MONGO_DTB_COLLECT_PANIERS')
@@ -151,63 +151,63 @@ def livreurCRUD(request):
         collection.delete_one({"_id": ObjectId(livreurs_data['_id'])})
         return JsonResponse("Deleted Successfully", safe=False)
 
-""" CLIENT CRUD """
-# get a client
-def client(request, id):
+""" User CRUD """
+# get a user
+def user(request, id):
     # load the client
     Mongoclient = pymongo.MongoClient(uri)
     db = Mongoclient[db_name]
-    collection = db[db_collect_clients]
-    client = collection.find_one({"_id": ObjectId(id)})
-    client['_id'] = str(client['_id'])
-    return JsonResponse(client, safe=False)
+    collection = db[db_collect_users]
+    user = collection.find_one({"_id": ObjectId(id)})
+    user['_id'] = str(user['_id'])
+    return JsonResponse(user, safe=False)
 
 @csrf_exempt
-def clientCRUD(request):
+def userCRUD(request):
     client = pymongo.MongoClient(uri)
     db = client[db_name]
-    collection = db[db_collect_clients]
+    collection = db[db_collect_users]
 
-# get all clients    
+# get all user    
     if request.method == 'GET':
-        clients = collection.find()
-        clients_list = []
-        for client in clients:
-            client['_id'] = str(client['_id'])
-            clients_list.append(client)
-        return JsonResponse(clients_list, safe=False)
-# add a client
+        users = collection.find()
+        user_list = []
+        for user in users:
+            user['_id'] = str(user['_id'])
+            user_list.append(user)
+        return JsonResponse(user_list, safe=False)
+# add a user
     elif request.method == 'POST':
-        clients_data = JSONParser().parse(request)
-        # Check if the client already exists.
-        if collection.find_one({"email": clients_data['email']}) is not None:
-            return JsonResponse("Client already exists", safe=False)
-        # Add the client.
-        collection.insert_one(clients_data)
-        return JsonResponse("Added Successfully", safe=False)
-# update a client
+        user_data = JSONParser().parse(request)
+        # insert with models
+        user_serializer = UserSerialize(data=user_data)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return JsonResponse("Added Successfully", safe=False)
+        return JsonResponse("Failed to Add")
+# update a user
     elif request.method == 'PUT':
-        clients_data = JSONParser().parse(request)
-        # Find the client with the specified _id.
-        client = collection.find_one({"_id": ObjectId(clients_data['_id'])})
-        # Check if the client exists.
-        if client is None:
-            return JsonResponse("Client does not exist", safe=False)
-        # Update the client's fields.
-        for field, value in clients_data.items():
+        user_data = JSONParser().parse(request)
+        # Find the user with the specified _id.
+        user = collection.find_one({"_id": ObjectId(user_data['_id'])})
+        # Check if the user exists.
+        if user is None:
+            return JsonResponse("user does not exist", safe=False)
+        # Update the user's fields.
+        for field, value in user_data.items():
             if field != "_id":
-                collection.update_one({"_id": ObjectId(clients_data['_id'])}, {"$set": {field: value}}, upsert=False)
+                collection.update_one({"_id": ObjectId(user_data['_id'])}, {"$set": {field: value}}, upsert=False)
         return JsonResponse("Updated Successfully", safe=False)
-# delete a client
+# delete a user
     elif request.method == 'DELETE':
-        clients_data = JSONParser().parse(request)
-        # Find the client with the specified _id.
-        client = collection.find_one({"_id": ObjectId(clients_data['_id'])})
-        # Check if the client exists.
-        if client is None:
-            return JsonResponse("Client does not exist", safe=False)
-        # Delete the client.
-        collection.delete_one({"_id": ObjectId(clients_data['_id'])})
+        user_data = JSONParser().parse(request)
+        # Find the user with the specified _id.
+        user = collection.find_one({"_id": ObjectId(user_data['_id'])})
+        # Check if the user exists.
+        if user is None:
+            return JsonResponse("user does not exist", safe=False)
+        # Delete the user.
+        collection.delete_one({"_id": ObjectId(user_data['_id'])})
         return JsonResponse("Deleted Successfully", safe=False)
 
     
@@ -295,24 +295,24 @@ def commandeCRUD(request):
 # add a commande
     elif request.method == 'POST':
         commandes_data = JSONParser().parse(request)
-        available_livreurs = list(collection_livreurs.find({"availability": True}))
-        if not available_livreurs:
-            return JsonResponse("No available livreurs", safe=False)
+        #available_livreurs = list(collection_livreurs.find({"availability": True}))
+        #if not available_livreurs:
+        #    return JsonResponse("No available livreurs", safe=False)
         # Choisissez aléatoirement un livreur parmi les livreurs disponibles
-        selected_livreur = random.choice(available_livreurs)
+        #selected_livreur = random.choice(available_livreurs)
         # Mettez à jour le statut du livreur sélectionné à False
-        collection_livreurs.update_one(
-            {"_id": selected_livreur["_id"]},
-            {"$set": {"availability": False}}
-        )
+        #collection_livreurs.update_one(
+        #    {"_id": selected_livreur["_id"]},
+        #    {"$set": {"availability": False}}
+        #)
         # Ajoutez la commande en associant le livreur sélectionné
-        commandes_data["livreur_id"] = str(selected_livreur["_id"])
-        collection.insert_one(commandes_data)
+        #commandes_data["livreur_id"] = str(selected_livreur["_id"])
+        #collection.insert_one(commandes_data)
         
         # Planifiez la tâche pour mettre à jour le statut après 20 minutes
         #update_order_and_driver_status(str(commandes_data["_id"]),str(selected_livreur["_id"]),schedule=10)
         
-        return JsonResponse("Commande added Successfully", safe=False)
+        return JsonResponse(commandes_data, safe=False)
     
 # update a commande
     elif request.method == 'PUT':
