@@ -11,7 +11,8 @@ export const Footer = () => {
                     <Link to="/terms" className="text-sm text-gray-500 hover:text-gray-700">
                         Termes et conditions
                     </Link>
-                    <Link to="/privacy" className="text-sm text-gray-500 hover:text-gray-700">
+                    {/* TODO: link to /privacy */}
+                    <Link to="#" className="text-sm text-gray-500 hover:text-gray-700">
                         Confidentialité
                     </Link>
                 </nav>
