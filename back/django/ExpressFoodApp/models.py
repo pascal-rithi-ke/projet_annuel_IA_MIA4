@@ -1,5 +1,5 @@
 from django.db import models
-from djongo import models as djongomodels
+from django.contrib.auth.hashers import make_password
 
 # Create your models here.
 class Plats(models.Model):
@@ -19,10 +19,20 @@ class Client(models.Model):
     email = models.CharField(max_length=100, default='')
     password = models.CharField(max_length=100, default='')
 
-class Commande(models.Model):
-    date = models.DateField(default='')
-    time = models.TimeField(default='')
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    livreur = models.ForeignKey(Livreur, on_delete=models.CASCADE)
-    plat = models.ForeignKey(Plats, on_delete=models.CASCADE)
-    status = models.CharField(max_length=100, default='')
+    def save(self, *args, **kwargs):
+        self.password = make_password(self.password)
+        super(Client, self).save(*args, **kwargs)
+
+#class Commande(models.Model):
+#    date = models.DateField(auto_now_add=True, blank=True)
+#    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+#    livreur = models.ForeignKey(Livreur, on_delete=models.CASCADE)
+#    plats = models.ManyToManyField(Plats)  # Utilisation de ManyToManyField pour les plats
+#    status = models.CharField(max_length=100, default='')
+#    price_total = models.FloatField(default=0)
+
+#class Panier(models.Model):
+#    date = models.DateField(auto_now_add=True, blank=True)
+#    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+#    plats = models.ManyToManyField(Plats)  # Utilisation de ManyToManyField pour les plats dans le panier
+#    price_total = models.FloatField(default=0)

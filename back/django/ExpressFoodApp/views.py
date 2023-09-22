@@ -23,6 +23,7 @@ db_collect_plats = os.getenv('MONGO_DTB_COLLECT_PLATS')
 db_collect_clients = os.getenv('MONGO_DTB_COLLECT_CLIENTS')
 db_collect_cmd = os.getenv('MONGO_DTB_COLLECT_CMD')
 db_collect_livreurs = os.getenv('MONGO_DTB_COLLECT_LIVREURS')
+db_collect_panier = os.getenv('MONGO_DTB_COLLECT_PANIERS')
 
 # Connection to MngoDB
 uri = f'mongodb+srv://{user}:{password}@{host}/'
@@ -31,8 +32,7 @@ uri = f'mongodb+srv://{user}:{password}@{host}/'
 def index(request):
     return HttpResponse("API is running")
 
-# Plat CRUD
-@csrf_exempt
+""" PLAT CRUD """
 # get a plat
 def plat(request, id):
     client = pymongo.MongoClient(uri)
@@ -42,12 +42,20 @@ def plat(request, id):
     plat['_id'] = str(plat['_id'])
     return JsonResponse(plat, safe=False)
 
+@csrf_exempt
 def platCRUD(request):
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_plats]
+    
 # get all plats
     if request.method == 'GET':
-        plats = Plats.objects.all()
-        plats_serializer = PlatsSerialize(plats, many=True)
-        return JsonResponse(plats_serializer.data, safe=False)
+        plats = collection.find()
+        plats_list = []
+        for plat in plats:
+            plat['_id'] = str(plat['_id'])
+            plats_list.append(plat)
+        return JsonResponse(plats_list, safe=False)
 # add a plat
     elif request.method == 'POST':
         plats_data = JSONParser().parse(request)
@@ -58,23 +66,30 @@ def platCRUD(request):
         return JsonResponse("Failed to Add")
 # update a plat
     elif request.method == 'PUT':
-        plats_data = JSONParser().parse(request)
-        plats = Plats.objects.get(id=plats_data['id'])
-        plats_serializer = PlatsSerialize(plats, data=plats_data)
-        if plats_serializer.is_valid():
-            plats_serializer.save()
+            plats_data = JSONParser().parse(request)
+            # Find the dish with the specified _id.
+            plat = collection.find_one({"_id": ObjectId(plats_data['_id'])})
+            # Check if the dish exists.
+            if plat is None:
+                return JsonResponse("Dish does not exist", safe=False)
+            # Update the dish's fields.
+            for field, value in plats_data.items():
+                if field != "_id":
+                    collection.update_one({"_id": ObjectId(plats_data['_id'])}, {"$set": {field: value}}, upsert=False)
             return JsonResponse("Updated Successfully", safe=False)
-        return JsonResponse("Failed to Update")
 # delete a plat
     elif request.method == 'DELETE':
         plats_data = JSONParser().parse(request)
-        plats = Plats.objects.get(id=plats_data['id'])
-        plats.delete()
+        # Find the dish with the specified _id.
+        plat = collection.find_one({"_id": ObjectId(plats_data['_id'])})
+        # Check if the dish exists.
+        if plat is None:
+            return JsonResponse("Dish does not exist", safe=False)
+        # Delete the dish.
+        collection.delete_one({"_id": ObjectId(plats_data['_id'])})
         return JsonResponse("Deleted Successfully", safe=False)
-
-
-#Livreur - CRUD
-@csrf_exempt
+    
+""" LIVREUR CRUD """
 # get a livreur
 def livreur(request, id):
     client = pymongo.MongoClient(uri)
@@ -84,12 +99,20 @@ def livreur(request, id):
     livreur['_id'] = str(livreur['_id'])
     return JsonResponse(livreur, safe=False)
 
+@csrf_exempt
 def livreurCRUD(request):
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_livreurs]
+
 # get all livreurs
     if request.method == 'GET':
-        livreurs = Livreur.objects.all()
-        livreurs_serializer = LivreurSerialize(livreurs, many=True)
-        return JsonResponse(livreurs_serializer.data, safe=False)
+        livreurs = collection.find()
+        livreurs_list = []
+        for livreur in livreurs:
+            livreur['_id'] = str(livreur['_id'])
+            livreurs_list.append(livreur)
+        return JsonResponse(livreurs_list, safe=False)
 # add a livreur
     elif request.method == 'POST':
         livreurs_data = JSONParser().parse(request)
@@ -101,68 +124,143 @@ def livreurCRUD(request):
 # update a livreur
     elif request.method == 'PUT':
         livreurs_data = JSONParser().parse(request)
-        livreurs = Livreur.objects.get(id=livreurs_data['id'])
-        livreurs_serializer = LivreurSerialize(livreurs, data=livreurs_data)
-        if livreurs_serializer.is_valid():
-            livreurs_serializer.save()
-            return JsonResponse("Updated Successfully", safe=False)
-        return JsonResponse("Failed to Update")
+        # Find the livreur with the specified _id.
+        livreur = collection.find_one({"_id": ObjectId(livreurs_data['_id'])})
+        # Check if the livreur exists.
+        if livreur is None:
+            return JsonResponse("Livreur does not exist", safe=False)
+        # Update the livreur's fields.
+        for field, value in livreurs_data.items():
+            if field != "_id":
+                collection.update_one({"_id": ObjectId(livreurs_data['_id'])}, {"$set": {field: value}}, upsert=False)
+        return JsonResponse("Updated Successfully", safe=False)
 # delete a livreur
     elif request.method == 'DELETE':
         livreurs_data = JSONParser().parse(request)
-        livreurs = Livreur.objects.get(id=livreurs_data['id'])
-        livreurs.delete()
+        # Find the livreur with the specified _id.
+        livreur = collection.find_one({"_id": ObjectId(livreurs_data['_id'])})
+        # Check if the livreur exists.
+        if livreur is None:
+            return JsonResponse("Livreur does not exist", safe=False)
+        # Delete the livreur.
+        collection.delete_one({"_id": ObjectId(livreurs_data['_id'])})
         return JsonResponse("Deleted Successfully", safe=False)
 
-#Client - CRUD
-@csrf_exempt
+""" CLIENT CRUD """
 # get a client
 def client(request, id):
-    client = pymongo.MongoClient(uri)
-    db = client[db_name]
+    Mongoclient = pymongo.MongoClient(uri)
+    db = Mongoclient[db_name]
     collection = db[db_collect_clients]
     client = collection.find_one({"_id": ObjectId(id)})
     client['_id'] = str(client['_id'])
     return JsonResponse(client, safe=False)
 
+@csrf_exempt
 def clientCRUD(request):
-# get all clients
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_clients]
+
+# get all clients    
     if request.method == 'GET':
-        clients = Client.objects.all()
-        clients_serializer = ClientSerialize(clients, many=True)
-        return JsonResponse(clients_serializer.data, safe=False)
-# get a client
-    if request.method == 'GET':
-        client = Client.objects.get(id=id)
-        client_serializer = ClientSerialize(client)
-        return JsonResponse(client_serializer.data, safe=False)
+        clients = collection.find()
+        clients_list = []
+        for client in clients:
+            client['_id'] = str(client['_id'])
+            clients_list.append(client)
+        return JsonResponse(clients_list, safe=False)
 # add a client
     elif request.method == 'POST':
         clients_data = JSONParser().parse(request)
-        clients_serializer = ClientSerialize(data=clients_data)
-        if clients_serializer.is_valid():
-            clients_serializer.save()
-            return JsonResponse("Added Successfully", safe=False)
-        return JsonResponse("Failed to Add")
+        # Check if the client already exists.
+        if collection.find_one({"email": clients_data['email']}) is not None:
+            return JsonResponse("Client already exists", safe=False)
+        # Add the client.
+        collection.insert_one(clients_data)
+        return JsonResponse("Added Successfully", safe=False)
 # update a client
     elif request.method == 'PUT':
         clients_data = JSONParser().parse(request)
-        clients = Client.objects.get(id=clients_data['id'])
-        clients_serializer = ClientSerialize(clients, data=clients_data)
-        if clients_serializer.is_valid():
-            clients_serializer.save()
-            return JsonResponse("Updated Successfully", safe=False)
-        return JsonResponse("Failed to Update")
+        # Find the client with the specified _id.
+        client = collection.find_one({"_id": ObjectId(clients_data['_id'])})
+        # Check if the client exists.
+        if client is None:
+            return JsonResponse("Client does not exist", safe=False)
+        # Update the client's fields.
+        for field, value in clients_data.items():
+            if field != "_id":
+                collection.update_one({"_id": ObjectId(clients_data['_id'])}, {"$set": {field: value}}, upsert=False)
+        return JsonResponse("Updated Successfully", safe=False)
 # delete a client
     elif request.method == 'DELETE':
         clients_data = JSONParser().parse(request)
-        clients = Client.objects.get(id=clients_data['id'])
-        clients.delete()
+        # Find the client with the specified _id.
+        client = collection.find_one({"_id": ObjectId(clients_data['_id'])})
+        # Check if the client exists.
+        if client is None:
+            return JsonResponse("Client does not exist", safe=False)
+        # Delete the client.
+        collection.delete_one({"_id": ObjectId(clients_data['_id'])})
         return JsonResponse("Deleted Successfully", safe=False)
+
     
-    
-#Commande - CRUD
+""" PANIER CRUD """
+# get a panier
+def panier(request, id):
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_panier]
+    panier = collection.find_one({"_id": ObjectId(id)})
+    panier['_id'] = str(panier['_id'])
+    return JsonResponse(panier, safe=False)
+
 @csrf_exempt
+def panierCRUD(request):
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_panier]
+    
+# get all paniers
+    if request.method == 'GET':
+        paniers = collection.find()
+        paniers_list = []
+        for panier in paniers:
+            panier['_id'] = str(panier['_id'])
+            paniers_list.append(panier)
+        return JsonResponse(paniers_list, safe=False)
+# add a panier
+    elif request.method == 'POST':
+        paniers_data = JSONParser().parse(request)
+        # insert with pymongo
+        collection.insert_one(paniers_data)
+        return JsonResponse("Added Successfully", safe=False)
+# update a panier
+    elif request.method == 'PUT':
+        paniers_data = JSONParser().parse(request)
+        # Find the panier with the specified _id.
+        panier = collection.find_one({"_id": ObjectId(paniers_data['_id'])})
+        # Check if the panier exists.
+        if panier is None:
+            return JsonResponse("Panier does not exist", safe=False)
+        for field, value in paniers_data.items():
+            if field != "_id":
+                collection.update_one({"_id": ObjectId(paniers_data['_id'])}, {"$set": {field: value}}, upsert=False)
+        return JsonResponse("Updated Successfully", safe=False)
+# delete a panier
+    elif request.method == 'DELETE':
+        paniers_data = JSONParser().parse(request)
+        # Find the panier with the specified _id.
+        panier = collection.find_one({"_id": ObjectId(paniers_data['_id'])})
+        # Check if the panier exists.
+        if panier is None:
+            return JsonResponse("Panier does not exist", safe=False)
+        # Delete the panier.
+        collection.delete_one({"_id": ObjectId(paniers_data['_id'])})
+        return JsonResponse("Deleted Successfully", safe=False)
+
+    
+""" COMMANDE CRUD """
 # get a commande
 def commande(request, id):
     client = pymongo.MongoClient(uri)
@@ -171,33 +269,48 @@ def commande(request, id):
     commande = collection.find_one({"_id": ObjectId(id)})
     commande['_id'] = str(commande['_id'])
     return JsonResponse(commande, safe=False)
-    
+
+@csrf_exempt
 def commandeCRUD(request):
-# get all commandes
+    client = pymongo.MongoClient(uri)
+    db = client[db_name]
+    collection = db[db_collect_cmd]
+    
+# get all commandes  
     if request.method == 'GET':
-        commandes = Commande.objects.all()
-        commandes_serializer = CommandeSerialize(commandes, many=True)
-        return JsonResponse(commandes_serializer.data, safe=False)
+        commandes = collection.find()
+        commandes_list = []
+        for commande in commandes:
+            commande['_id'] = str(commande['_id'])
+            commandes_list.append(commande)
+        return JsonResponse(commandes_list, safe=False)
 # add a commande
     elif request.method == 'POST':
         commandes_data = JSONParser().parse(request)
-        commandes_serializer = CommandeSerialize(data=commandes_data)
-        if commandes_serializer.is_valid():
-            commandes_serializer.save()
-            return JsonResponse("Added Successfully", safe=False)
-        return JsonResponse("Failed to Add")
+        # insert with pymongo
+        collection.insert_one(commandes_data)
+        return JsonResponse("Added Successfully", safe=False)
 # update a commande
     elif request.method == 'PUT':
         commandes_data = JSONParser().parse(request)
-        commandes = Commande.objects.get(id=commandes_data['id'])
-        commandes_serializer = CommandeSerialize(commandes, data=commandes_data)
-        if commandes_serializer.is_valid():
-            commandes_serializer.save()
-            return JsonResponse("Updated Successfully", safe=False)
-        return JsonResponse("Failed to Update")
+        # Find the commande with the specified _id.
+        commande = collection.find_one({"_id": ObjectId(commandes_data['_id'])})
+        # Check if the commande exists.
+        if commande is None:
+            return JsonResponse("Commande does not exist", safe=False)
+        # Update the commande's fields.
+        for field, value in commandes_data.items():
+            if field != "_id":
+                collection.update_one({"_id": ObjectId(commandes_data['_id'])}, {"$set": {field: value}}, upsert=False)
+        return JsonResponse("Updated Successfully", safe=False)
 # delete a commande
     elif request.method == 'DELETE':
         commandes_data = JSONParser().parse(request)
-        commandes = Commande.objects.get(id=commandes_data['id'])
-        commandes.delete()
+        # Find the commande with the specified _id.
+        commande = collection.find_one({"_id": ObjectId(commandes_data['_id'])})
+        # Check if the commande exists.
+        if commande is None:
+            return JsonResponse("Commande does not exist", safe=False)
+        # Delete the commande.
+        collection.delete_one({"_id": ObjectId(commandes_data['_id'])})
         return JsonResponse("Deleted Successfully", safe=False)
