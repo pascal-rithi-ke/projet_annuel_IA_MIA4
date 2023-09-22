@@ -9,6 +9,8 @@ import { CartRepositoriesReactQuery } from '../../Modules/Cart/React-query/Cart.
 import { CartInMemoryRepositories } from '../../Modules/Cart/Repositories/Cart.repositories.inmemory';
 import { LivreursInMemoryRepositories } from '../../Modules/Livreur/Repositories/Livreur.repositories.inmemory';
 import { LivreursRepositoriesReactQuery } from '../../Modules/Livreur/React-query/Livreur.repositories.react-query';
+import { CustomerRepositoriesReactQuery } from '../../Modules/Customer/React-query/Customer.repositories.react-query';
+import { CustomerInMemoryRepositories } from '../../Modules/Customer/Repositories/Customer.repositories.inmemory';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +32,7 @@ export const Provider = ({ children }: { children: any }) => {
         recettesService: new RecettesRepositoriesReactQuery(new RecettesInMemoryRepositories()),
         AuthService: new AuthRepositoriesReactQuery(new AuthInMemoryRepositories()),
         CartService: new CartRepositoriesReactQuery(new CartInMemoryRepositories()),
+        CustomerService: new CustomerRepositoriesReactQuery(new CustomerInMemoryRepositories()),
         livreursService: new LivreursRepositoriesReactQuery(new LivreursInMemoryRepositories()),
       }}>
         <QueryClientProvider client={queryClient}>
