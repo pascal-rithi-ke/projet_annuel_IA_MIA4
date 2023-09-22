@@ -9,9 +9,13 @@ export const NavbarManager = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  }
+
   return (
     <div className="bg-white">
-      <MobileMenu />
+      <MobileMenu isAuth={isAuth} isOpen={isMenuOpen} logoutSubmit={logoutSubmit} closeMenu={closeMenu} />
       <header className="relative bg-white">
         <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="border-b border-gray-200">
@@ -50,7 +54,7 @@ export const NavbarManager = () => {
                         <img className="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                       </button>
                     </div>
-                    <div className={`absolute bg-slate-100 top-14 right-0 rounded-md mt-3 space-y-1 px-2 py-1 transition-all duration-300 ease-in-out ${isMenuOpen ? "flex flex-col opacity-100" : "hidden opacity-0"}`}>
+                    <div className={`absolute hidden bg-slate-100 top-14 right-0 rounded-md mt-3 space-y-1 px-2 py-1 transition-all duration-300 ease-in-out ${isMenuOpen ? "lg:flex flex-col opacity-100" : "opacity-0"}`}>
                       <button onClick={logoutSubmit} className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:text-gray-500/80 transition-opacity">Déconnexion</button>
                     </div>
                   </div>
@@ -64,14 +68,21 @@ export const NavbarManager = () => {
   )
 }
 
-const MobileMenu = () => {
+interface MobileMenuProps {
+  isAuth: boolean;
+  isOpen: boolean;
+  closeMenu: () => void;
+  logoutSubmit: () => void;
+}
+
+const MobileMenu = ({ isAuth, isOpen, closeMenu, logoutSubmit }: MobileMenuProps) => {
   return (
-    <div className="relative z-40 lg:hidden" role="dialog" aria-modal="true">
+    <div className={`relative z-40 lg:hidden ${isOpen ? "block" : "hidden"}`} role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-black bg-opacity-25"></div>
       <div className="fixed inset-0 z-40 flex">
         <div className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
           <div className="flex px-4 pb-2 pt-5">
-            <button type="button" className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400">
+            <button type="button" onClick={closeMenu} className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400">
               <span className="absolute -inset-0.5"></span>
               <span className="sr-only">Close menu</span>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
@@ -84,18 +95,13 @@ const MobileMenu = () => {
             <div className="flow-root">
               <Link to="/listClients" className="-m-2 block p-2 font-medium text-gray-900">Clients</Link>
             </div>
-          </div>
-          <div className="space-y-6 border-t border-gray-200 px-4 py-6">
             <div className="flow-root">
               <Link to="/gestionRecettes" className="-m-2 block p-2 font-medium text-gray-900">Gestion Recettes</Link>
             </div>
           </div>
           <div className="space-y-6 border-t border-gray-200 px-4 py-6">
             <div className="flow-root">
-              <Link to="/login" className="-m-2 block p-2 font-medium text-gray-900">Sign in</Link>
-            </div>
-            <div className="flow-root">
-              <Link to="/register" className="-m-2 block p-2 font-medium text-gray-900">Create account</Link>
+              <button onClick={logoutSubmit} className="block text-base font-medium text-gray-900">Déconnexion</button>
             </div>
           </div>
         </div>
