@@ -1,8 +1,18 @@
 import { createContext, useContext } from "react";
-import { IUsersRepositoriesReactQuery } from "../../Modules/User/Port/User.port.repositories.react-query";
+import { IRecettesRepositoriesReactQuery } from "../../Modules/Recette/Port/Recette.port.repositories.react-query";
+import { IAuthRepositoriesReactQuery } from "../../Modules/Auth/Port/Auth.port.repositories.react-query";
+import { ICartRepositoriesReactQuery } from "../../Modules/Cart/Port/Cart.port.repositories.react-query";
+import { ILivreursRepositoriesReactQuery } from "../../Modules/Livreur/Port/Livreur.port.repositories.react-query";
+import { ICustomerRepositoriesReactQuery } from "../../Modules/Customer/Port/Customer.port.repositories.react-query";
+import { ICommandeRepositoriesReactQuery } from "../../Modules/Commande/Port/Commande.port.repositories.react-query";
 
 export type Dependencies = {
-  usersService: IUsersRepositoriesReactQuery
+  recettesService: IRecettesRepositoriesReactQuery
+  AuthService: IAuthRepositoriesReactQuery
+  CartService: ICartRepositoriesReactQuery
+  CommandeService: ICommandeRepositoriesReactQuery
+  livreursService: ILivreursRepositoriesReactQuery
+  CustomerService: ICustomerRepositoriesReactQuery
 };
 
 const DependenciesContext = createContext<Dependencies>(null as any);

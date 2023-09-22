@@ -1,14 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { isAuthentified } from "../../utils/auth";
 
 export const ProtectedPublicRoute = ({
   children,
 }: any) => {
 
-  const token = {
-    role: 'user'
-  }
-
-  if (token) {
+  if (isAuthentified()) {
     return <Navigate to={"/"} replace />;
   }
 
