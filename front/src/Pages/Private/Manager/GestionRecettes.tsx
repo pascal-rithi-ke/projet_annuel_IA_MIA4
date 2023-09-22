@@ -5,6 +5,7 @@ import { Recette, RecetteType } from "../../../Modules/Recette/Model/Recette.mod
 import { UseFormReset, useForm } from "react-hook-form";
 import { maxValue, minLength, minValue, number, object, string } from "valibot";
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import toast, { Toaster } from 'react-hot-toast';
 
 function getRecetteType(type: RecetteType) {
   switch (type) {
@@ -33,7 +34,19 @@ const EditRecetteSchema = object({
     maxValue(1)
   ])
 });
-
+const notify = (title: string) => toast.success(title, {
+  duration: 4000,
+  position: 'top-right',
+  style: {
+    border: '1px solid #713200',
+    padding: '16px',
+    color: '#713200',
+  },
+  iconTheme: {
+    primary: '#713200',
+    secondary: '#FFFAEE',
+  },
+})
 export const GestionRecettes = () => {
   const { recettesService } = useDependencies();
   const { data: recettes } = recettesService.useGetAllRecettesQuery();
@@ -51,7 +64,15 @@ export const GestionRecettes = () => {
     setIsEditing(true);
   }
 
-  const { mutate: updateRecetteMutation } = recettesService.useUpdateRecetteMutation();
+  const { mutate: updateRecetteMutation } = recettesService.useUpdateRecetteMutation({
+    onSuccess: () => {
+      notify("La recette a été modifiée.");
+    },
+    onError: (error) => {
+      console.log(error);
+      notify("Une erreur est survenue.");
+    }
+  });
 
   const editRecette = (data: Partial<Recette>) => {
     if (!recetteToEdit) return;
@@ -61,7 +82,6 @@ export const GestionRecettes = () => {
   const closeEditingModal = (resetForm: UseFormReset<any>) => {
     setRecetteToEditId(null);
     setIsEditing(false);
-
     resetForm();
   }
 
@@ -70,7 +90,15 @@ export const GestionRecettes = () => {
     setIsDeleting(true);
   }
 
-  const { mutate: deleteRecetteMutation } = recettesService.useDeleteRecetteMutation();
+  const { mutate: deleteRecetteMutation } = recettesService.useDeleteRecetteMutation({
+    onSuccess: () => {
+      notify("La recette a été supprimée.");
+    },
+    onError: (error) => {
+      console.log(error);
+      notify("Une erreur est survenue.");
+    }
+  });
 
   const deleteRecette = (recetteId: string | undefined) => {
     if (!recetteToDelete) return;
@@ -84,6 +112,7 @@ export const GestionRecettes = () => {
 
   return (
     <>
+      <Toaster />
       <h1>Recettes</h1>
       <table className="table-auto">
         <thead>
