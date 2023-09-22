@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom"
 import { Logout } from "../../Modules/Auth/Services/Logout";
 import { isAuthentified } from "../../utils/auth";
+import { useState } from "react";
 
 export const NavbarManager = () => {
   const { logoutSubmit } = Logout();
   const isAuth = isAuthentified();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="bg-white">
@@ -41,17 +44,14 @@ export const NavbarManager = () => {
                 </div>
               ) : (
                 <div className="ml-auto flex items-center">
-                  <div className="border-t border-gray-700 pb-3 pt-4">
+                  <div className="relative flex border-t border-gray-700 pb-3 pt-4">
                     <div className="flex items-center px-5">
-                      <div className="flex-shrink-0">
+                      <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="flex-shrink-0 hover:opacity-90 transition-opacity">
                         <img className="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                      </div>
+                      </button>
                     </div>
-                    <div className="mt-3 space-y-1 px-2">
-                      {/* TODO: only keep logout button */}
-                      <Link to="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</Link>
-                      <Link to="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</Link>
-                      <button onClick={logoutSubmit} className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</button>
+                    <div className={`absolute bg-slate-100 top-14 right-0 rounded-md mt-3 space-y-1 px-2 py-1 transition-all duration-300 ease-in-out ${isMenuOpen ? "flex flex-col opacity-100" : "hidden opacity-0"}`}>
+                      <button onClick={logoutSubmit} className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:text-gray-500/80 transition-opacity">Déconnexion</button>
                     </div>
                   </div>
                 </div>
@@ -65,7 +65,6 @@ export const NavbarManager = () => {
 }
 
 const MobileMenu = () => {
-
   return (
     <div className="relative z-40 lg:hidden" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-black bg-opacity-25"></div>
