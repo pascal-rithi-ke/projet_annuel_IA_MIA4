@@ -48,7 +48,7 @@ export class RecettesInMemoryRepositories implements IRecetteRepositories {
   }
 }
 
-const FakeRecetteData: Recette[] = [
+export const FakeRecetteData: Recette[] = [
   {
     id: "1",
     name: "Tonkotsu ramen - bouillon de porc",

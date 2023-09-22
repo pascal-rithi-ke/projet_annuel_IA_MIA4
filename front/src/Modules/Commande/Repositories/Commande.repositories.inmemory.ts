@@ -30,7 +30,7 @@ export class CommandeInMemoryRepositories implements ICommandeRepositories {
         number_commande: window.crypto.getRandomValues(new Uint32Array(1))[0].toString(),
         livreur: "livreur 1",
         paniers: commande.paniers,
-        total: 0,
+        total: commande.paniers.reduce((acc, panier) => acc + panier.price, 0),
       };
 
       this.ListCommande.set(commandeItem.number_commande, commandeItem);
