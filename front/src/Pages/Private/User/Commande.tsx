@@ -120,15 +120,15 @@ export const Commande = () => {
             <div className="border-y border-gray-300 p-6 space-y-6">
               <div className="flex justify-between items-center">
                 <p className="font-medium">Sous-total</p>
-                <p className="font-medium">10,00 €</p>
+                <p className="font-medium">{Cart?.soustotal} €</p>
               </div>
               <div className="flex justify-between items-center">
                 <p className="font-medium">Livraison</p>
-                <p className="font-medium">3,00 €</p>
+                <p className="font-medium">{Cart?.livraison} €</p>
               </div>
               <div className="border-t border-gray-300 flex justify-between items-center pt-6">
                 <p className="font-semibold">Total</p>
-                <p className="font-semibold">13,00 €</p>
+                <p className="font-semibold">{Cart?.total} €</p>
               </div>
             </div>
             <div className="p-6">
