@@ -23,4 +23,8 @@ export interface IRecettesRepositoriesReactQuery {
   useDeleteRecetteMutation(
     mutationOptions?: MutationOptions<Recette, Error, Recette, unknown>
   ): UseMutationResult<Recette, Error, Recette, unknown>;
+
+  useAddRecetteMutation(
+    mutationOptions?: MutationOptions<Recette, Error, Recette, unknown>
+  ): UseMutationResult<Recette, Error, Recette, unknown>;
 }

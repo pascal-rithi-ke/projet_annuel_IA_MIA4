@@ -57,4 +57,11 @@ export class RecettesRepositoriesReactQuery
       mutationOptions
     );
   }
+
+  useAddRecetteMutation(mutationOptions?: MutationOptions<Recette, Error, Recette, unknown> | undefined): UseMutationResult<Recette, Error, Recette, unknown> {
+    return useMutation<Recette, Error, Recette, unknown>(
+      (data) => this.recettesApiService.add(data),
+      mutationOptions
+    );
+  }
 }
