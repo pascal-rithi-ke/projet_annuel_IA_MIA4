@@ -13,6 +13,7 @@ class Plats(models.Model):
 class Livreur(models.Model):
     name = models.CharField(max_length=100, default='')
     availability = models.BooleanField(default=True)
+    location = models.CharField(max_length=100, default='Paris, ile de france')
 
 class Client(models.Model):
     name = models.CharField(max_length=100, default='')

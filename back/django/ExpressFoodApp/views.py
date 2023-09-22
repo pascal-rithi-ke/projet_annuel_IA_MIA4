@@ -2,10 +2,13 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse, HttpResponse
 
+from django.contrib.auth import authenticate, login
+
 from ExpressFoodApp.models import *
 from ExpressFoodApp.serializers import *
 
 import random
+from .task import update_order_and_driver_status
 
 # Utilisation de pymongo pour la gestion des requetes spéciales + avec id
 import pymongo
@@ -151,6 +154,7 @@ def livreurCRUD(request):
 """ CLIENT CRUD """
 # get a client
 def client(request, id):
+    # load the client
     Mongoclient = pymongo.MongoClient(uri)
     db = Mongoclient[db_name]
     collection = db[db_collect_clients]
@@ -291,17 +295,25 @@ def commandeCRUD(request):
 # add a commande
     elif request.method == 'POST':
         commandes_data = JSONParser().parse(request)
-        # count of livreurs available
-        livreurs_available = collection_livreurs.count_documents({"availability": {"$eq": True}})
-        # get random livreur where available = true with skip
-        livreur = collection_livreurs.find({"availability": {"$eq": True}}).skip(random.randint(0, livreurs_available))
-        # update livreur available to false
-        collection_livreurs.update_one({"_id": ObjectId(livreur[0]['_id'])}, {"$set": {"availability": False}})
-        # add livreur to commande
-        commandes_data['livreur'] = livreur[0]['_id']
-        # insert commande
+        available_livreurs = list(collection_livreurs.find({"availability": True}))
+        if not available_livreurs:
+            return JsonResponse("No available livreurs", safe=False)
+        # Choisissez aléatoirement un livreur parmi les livreurs disponibles
+        selected_livreur = random.choice(available_livreurs)
+        # Mettez à jour le statut du livreur sélectionné à False
+        collection_livreurs.update_one(
+            {"_id": selected_livreur["_id"]},
+            {"$set": {"availability": False}}
+        )
+        # Ajoutez la commande en associant le livreur sélectionné
+        commandes_data["livreur_id"] = str(selected_livreur["_id"])
         collection.insert_one(commandes_data)
-        return JsonResponse("Added Successfully", safe=False)
+        
+        # Planifiez la tâche pour mettre à jour le statut après 20 minutes
+        #update_order_and_driver_status(str(commandes_data["_id"]),str(selected_livreur["_id"]),schedule=10)
+        
+        return JsonResponse("Commande added Successfully", safe=False)
+    
 # update a commande
     elif request.method == 'PUT':
         commandes_data = JSONParser().parse(request)
@@ -326,3 +338,16 @@ def commandeCRUD(request):
         # Delete the commande.
         collection.delete_one({"_id": ObjectId(commandes_data['_id'])})
         return JsonResponse("Deleted Successfully", safe=False)
+    
+def login(request):
+    user_data = JSONParser().parse(request)
+    user = authenticate(request, username=user_data['username'], password=user_data['password'])
+    if user is not None:
+        login(request, user)
+        return JsonResponse("Logged in Successfully", safe=False)
+    else:
+        return JsonResponse("Invalid credentials", safe=False)
+    
+def logout(request):
+    logout(request)
+    return JsonResponse("Logged out Successfully", safe=False)

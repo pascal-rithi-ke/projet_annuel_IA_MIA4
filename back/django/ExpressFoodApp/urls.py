@@ -18,4 +18,7 @@ urlpatterns = [
     
     re_path(r'^commandes$', views.commandeCRUD),
     re_path(r'^commande/([^/]+)$', views.commande),
+    
+    re_path(r'^login$', views.login),
+    re_path(r'^logout$', views.logout),
 ]
