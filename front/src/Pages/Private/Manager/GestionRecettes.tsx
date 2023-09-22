@@ -110,6 +110,20 @@ export const GestionRecettes = () => {
     setIsDeleting(false);
   }
 
+  // add recette
+  const { mutate: addRecetteMutation } = recettesService.useAddRecetteMutation({
+    onSuccess: () => {
+      notify("La recette a été ajoutée.");
+    },
+    onError: (error) => {
+      console.log(error);
+      notify("Une erreur est survenue.");
+    }
+  });
+  const addRecette = (data: Partial<Recette>) => {
+    addRecetteMutation(data);
+  }
+
   return (
     <>
       <Toaster />
@@ -145,9 +159,11 @@ export const GestionRecettes = () => {
           ))}
         </tbody>
       </table>
-
+      <button onClick={() => setIsEditing(true)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        Ajouter
+      </button>
       <EditModal recette={recetteToEdit} isEditing={isEditing} closeEditingModal={closeEditingModal} editRecette={editRecette} />
-
+      <AddModal isAdding={isEditing} closeAddingModal={closeEditingModal} addRecette={addRecette} />
       {/* Delete modal */}
       <Modal
         open={isDeleting}
@@ -170,7 +186,58 @@ interface EditModalProps {
   closeEditingModal: (resetForm: UseFormReset<any>) => void
   editRecette: (data: Partial<Recette>) => void
 }
+interface AddModalProps {
+  isAdding: boolean
+  closeAddingModal: (resetForm: UseFormReset<any>) => void
+  addRecette: (data: Partial<Recette>) => void
+}
+// component add recette
+const AddModal = ({ isAdding, closeAddingModal, addRecette }: AddModalProps) => {
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    resolver: valibotResolver(EditRecetteSchema),
+  });
 
+  return (
+    <Modal
+      open={isAdding}
+      onClose={() => closeAddingModal(reset)}
+      title="Ajouter une recette"
+      onSubmit={
+        handleSubmit((data) => {
+          addRecette(data);
+
+          closeAddingModal(reset);
+        })
+      }
+    >
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="name">Nom</label>
+          <input type="text" id="name" {...register("name")} className="p-3 border border-gray-300 rounded" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="description">Description</label>
+          <input type="text" id="description" {...register("description")} className="p-3 border border-gray-300 rounded" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="price">Prix</label>
+          <input type="number" id="price" {...register("price", { valueAsNumber: true })} className="p-3 border border-gray-300 rounded" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="quantity">Quantité</label>
+          <input type="number" id="quantity" {...register("quantity", { valueAsNumber: true })} className="p-3 border border-gray-300 rounded" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="type">Type</label>
+          <select id="type" {...register("type", { valueAsNumber: true })}>
+            <option value={RecetteType.PLAT}>{getRecetteType(RecetteType.PLAT)}</option>
+            <option value={RecetteType.DESSERT}>{getRecetteType(RecetteType.DESSERT)}</option>
+          </select>
+        </div>
+      </div>
+    </Modal>
+  )
+}
 const EditModal = ({ recette, isEditing, closeEditingModal, editRecette }: EditModalProps) => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: valibotResolver(EditRecetteSchema),

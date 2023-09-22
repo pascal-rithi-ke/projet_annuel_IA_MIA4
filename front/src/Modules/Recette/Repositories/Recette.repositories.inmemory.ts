@@ -35,6 +35,13 @@ export class RecettesInMemoryRepositories implements IRecetteRepositories {
       }
     });
   }
+  add(recette: Recette): Promise<Recette> {
+    return new Promise<Recette>((resolve) => {
+      FakeRecetteData.push(recette);
+
+      resolve(recette);
+    });
+  }
   delete(recetteId: string): Promise<Recette> {
     return new Promise<Recette>((resolve) => {
       const recetteToDelete = FakeRecetteData.find((r) => r.id === recetteId);
