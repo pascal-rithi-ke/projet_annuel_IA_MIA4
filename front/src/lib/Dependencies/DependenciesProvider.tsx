@@ -3,11 +3,13 @@ import { IRecettesRepositoriesReactQuery } from "../../Modules/Recette/Port/Rece
 import { IAuthRepositoriesReactQuery } from "../../Modules/Auth/Port/Auth.port.repositories.react-query";
 import { ICartRepositoriesReactQuery } from "../../Modules/Cart/Port/Cart.port.repositories.react-query";
 import { ILivreursRepositoriesReactQuery } from "../../Modules/Livreur/Port/Livreur.port.repositories.react-query";
+import { ICommandeRepositoriesReactQuery } from "../../Modules/Commande/Port/Commande.port.repositories.react-query";
 
 export type Dependencies = {
   recettesService: IRecettesRepositoriesReactQuery
   AuthService: IAuthRepositoriesReactQuery
   CartService: ICartRepositoriesReactQuery
+  CommandeService: ICommandeRepositoriesReactQuery
   livreursService: ILivreursRepositoriesReactQuery
 };
 

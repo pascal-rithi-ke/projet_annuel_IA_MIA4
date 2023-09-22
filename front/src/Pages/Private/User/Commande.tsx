@@ -1,15 +1,69 @@
 // import { Button } from "../../../Components/atoms/Button"
 import { useForm } from "react-hook-form"
 import { Button } from "../../../Components/atoms/Button";
+import { email, minLength, object, string } from "valibot";
+import { valibotResolver } from "@hookform/resolvers/valibot";
+import { useDependencies } from "../../../lib/Dependencies/DependenciesProvider";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Commande = () => {
-  const { register, handleSubmit } = useForm();
+  const CommandeSchema = object({
+    email: string([
+      minLength(1, 'Please enter your email.'),
+      email('The email address is badly formatted.'),
+    ]),
+    first_name: string([
+      minLength(1, 'Please enter your first_name.'),
+    ]),
+    last_name: string([
+      minLength(1, 'Please enter your last_name.'),
+    ]),
+    address: string([
+      minLength(1, 'Please enter your address.'),
+    ]),
+    phone: string([
+      minLength(1, 'Please enter your phone.'),
+    ]),
+    card_number: string([
+      minLength(1, 'Please enter your card_number.'),
+    ]),
+    card_name: string([
+      minLength(1, 'Please enter your card_name.'),
+    ]),
+    card_expiration: string([
+      minLength(1, 'Please enter your card_expiration.'),
+    ]),
+    cvc: string([
+      minLength(1, 'Please enter your cvc.'),
+    ]),
+  });
+
+  const { register, handleSubmit } = useForm({
+    resolver: valibotResolver(CommandeSchema),
+  });
+  const { CommandeService, CartService } = useDependencies()
+  const { data: Cart } = CartService.useGetAllCartsQuery()
+  const navigate = useNavigate()
+  const cache = useQueryClient();
+  const { mutateAsync } = CommandeService.useAddCommandeMutation({
+    onSuccess: () => {
+      cache.invalidateQueries(["CommandeService.getAll"])
+      navigate("/listcommande")
+    },
+    onError: (error) => {
+      console.log(error)
+    }
+  })
+  const addCommandeSubmit = (data: any) => {
+    mutateAsync({ ...data, paniers: Cart?.paniers })
+  }
 
   return (
     <main className="px-8 py-16">
       <form
         className="md:grid md:grid-cols-2 md:gap-16"
-        onSubmit={handleSubmit((data) => console.log(data))}
+        onSubmit={handleSubmit(addCommandeSubmit)}
       >
         <section>
           <div className="space-y-4">
