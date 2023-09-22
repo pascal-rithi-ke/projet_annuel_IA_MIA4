@@ -1,7 +1,10 @@
 import {
+  MutationOptions,
   QueryKey,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
+  useMutation,
   useQuery,
 } from "@tanstack/react-query";
 import { IRecettesRepositoriesReactQuery } from "../Port/Recette.port.repositories.react-query";
@@ -27,6 +30,24 @@ export class RecettesRepositoriesReactQuery
       ["RecettesService.getAll"],
       () => this.recettesApiService.getAll(),
       queryOptions
+    );
+  }
+
+  useUpdateRecetteMutation(
+    mutationOptions?: MutationOptions<Recette, Error, Recette, unknown>
+  ): UseMutationResult<Recette, Error, Recette, unknown> {
+    return useMutation<Recette, Error, Recette, unknown>(
+      (data) => this.recettesApiService.edit(data),
+      mutationOptions
+    );
+  }
+
+  useDeleteRecetteMutation(
+    mutationOptions?: MutationOptions<Recette, Error, Recette, unknown>
+  ): UseMutationResult<Recette, Error, Recette, unknown> {
+    return useMutation<Recette, Error, Recette, unknown>(
+      (data) => this.recettesApiService.delete(data.id),
+      mutationOptions
     );
   }
 }
