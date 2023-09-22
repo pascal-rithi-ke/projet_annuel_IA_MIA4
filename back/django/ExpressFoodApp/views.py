@@ -5,6 +5,8 @@ from django.http.response import JsonResponse, HttpResponse
 from ExpressFoodApp.models import *
 from ExpressFoodApp.serializers import *
 
+import random
+
 # Utilisation de pymongo pour la gestion des requetes spéciales + avec id
 import pymongo
 from bson.objectid import ObjectId
@@ -275,6 +277,7 @@ def commandeCRUD(request):
     client = pymongo.MongoClient(uri)
     db = client[db_name]
     collection = db[db_collect_cmd]
+    collection_livreurs = db[db_collect_livreurs]
     
 # get all commandes  
     if request.method == 'GET':
@@ -284,10 +287,19 @@ def commandeCRUD(request):
             commande['_id'] = str(commande['_id'])
             commandes_list.append(commande)
         return JsonResponse(commandes_list, safe=False)
+    
 # add a commande
     elif request.method == 'POST':
         commandes_data = JSONParser().parse(request)
-        # insert with pymongo
+        # count of livreurs available
+        livreurs_available = collection_livreurs.count_documents({"availability": {"$eq": True}})
+        # get random livreur where available = true with skip
+        livreur = collection_livreurs.find({"availability": {"$eq": True}}).skip(random.randint(0, livreurs_available))
+        # update livreur available to false
+        collection_livreurs.update_one({"_id": ObjectId(livreur[0]['_id'])}, {"$set": {"availability": False}})
+        # add livreur to commande
+        commandes_data['livreur'] = livreur[0]['_id']
+        # insert commande
         collection.insert_one(commandes_data)
         return JsonResponse("Added Successfully", safe=False)
 # update a commande

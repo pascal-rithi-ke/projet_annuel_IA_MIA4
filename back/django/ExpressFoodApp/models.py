@@ -7,12 +7,12 @@ class Plats(models.Model):
     description = models.CharField(max_length=100, default='')
     price = models.FloatField(default=0)
     quantity = models.IntegerField(default=0)
-    availability = models.BooleanField(default=False)
+    availability = models.BooleanField(default=True)
     type = models.CharField(max_length=100, default='')
     
 class Livreur(models.Model):
     name = models.CharField(max_length=100, default='')
-    availability = models.BooleanField(default=False)
+    availability = models.BooleanField(default=True)
 
 class Client(models.Model):
     name = models.CharField(max_length=100, default='')
