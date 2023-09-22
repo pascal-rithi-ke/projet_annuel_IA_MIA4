@@ -14,7 +14,6 @@ const deliveryMen = [{
 ]
 export const Dashbord = () => {
 
-  // add table deliveryMen tailwind css  
   return (
     <>
       <h1>Dashbord</h1>

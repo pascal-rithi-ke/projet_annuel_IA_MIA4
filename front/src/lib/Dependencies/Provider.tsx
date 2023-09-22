@@ -7,6 +7,8 @@ import { AuthRepositoriesReactQuery } from '../../Modules/Auth/React-query/Auth.
 import { AuthInMemoryRepositories } from '../../Modules/Auth/Repositories/Auth.repositories.inmemory';
 import { CartRepositoriesReactQuery } from '../../Modules/Cart/React-query/Cart.repositories.react-query';
 import { CartInMemoryRepositories } from '../../Modules/Cart/Repositories/Cart.repositories.inmemory';
+import { CommandeRepositoriesReactQuery } from '../../Modules/Commande/React-query/Commande.repositories.react-query';
+import { CommandeInMemoryRepositories } from '../../Modules/Commande/Repositories/Commande.repositories.inmemory';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +30,7 @@ export const Provider = ({ children }: { children: any }) => {
         recettesService: new RecettesRepositoriesReactQuery(new RecettesInMemoryRepositories()),
         AuthService: new AuthRepositoriesReactQuery(new AuthInMemoryRepositories()),
         CartService: new CartRepositoriesReactQuery(new CartInMemoryRepositories()),
+        CommandeService: new CommandeRepositoriesReactQuery(new CommandeInMemoryRepositories())
       }}>
         <QueryClientProvider client={queryClient}>
           {children}

@@ -37,6 +37,7 @@ export const Navbar = () => {
                     <span className="h-6 w-px bg-gray-200" aria-hidden="true"></span>
                     <Link to="/register" className="text-sm font-medium text-gray-700 hover:text-gray-800">Create account</Link>
                     <Link to="/panier" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Panier</Link>
+
                   </div>
                 </div>
               ) : (
@@ -49,6 +50,7 @@ export const Navbar = () => {
                     </div>
                     <div className="flex items-center px-5">
                       <Link to="/panier" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Panier</Link>
+                      <Link to="/listcommande" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Commande</Link>
                     </div>
                     <div className="mt-3 space-y-1 px-2">
                       <Link to="/dashboard" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</Link>

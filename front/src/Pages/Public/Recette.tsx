@@ -8,7 +8,7 @@ export const Recette = () => {
   const [quantity, setQuantity] = React.useState(1)
 
   const { recettesService, CartService } = useDependencies()
-  const { data } = recettesService.useGetIdRecetteQuery(Number(id))
+  const { data } = recettesService.useGetIdRecetteQuery(String(id))
   const { mutateAsync } = CartService.useAddToCartsMutation({
     onError: (error) => {
       console.log(error)

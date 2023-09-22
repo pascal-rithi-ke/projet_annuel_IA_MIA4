@@ -2,11 +2,13 @@ import { createContext, useContext } from "react";
 import { IRecettesRepositoriesReactQuery } from "../../Modules/Recette/Port/Recette.port.repositories.react-query";
 import { IAuthRepositoriesReactQuery } from "../../Modules/Auth/Port/Auth.port.repositories.react-query";
 import { ICartRepositoriesReactQuery } from "../../Modules/Cart/Port/Cart.port.repositories.react-query";
+import { ICommandeRepositoriesReactQuery } from "../../Modules/Commande/Port/Commande.port.repositories.react-query";
 
 export type Dependencies = {
   recettesService: IRecettesRepositoriesReactQuery
   AuthService: IAuthRepositoriesReactQuery
   CartService: ICartRepositoriesReactQuery
+  CommandeService: ICommandeRepositoriesReactQuery
 };
 
 const DependenciesContext = createContext<Dependencies>(null as any);
