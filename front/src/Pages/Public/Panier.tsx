@@ -27,7 +27,7 @@ export const Panier = () => {
         <div className="flex justify-between bg-white border border-gray-300 rounded-lg">
           <ul className="w-4/12">
             {data?.paniers?.map(recette => (
-              <li className="border-b last:border-b-0 border-gray-300 flex p-6">
+              <li className="border-b last:border-b-0 border-gray-300 flex p-6" key={recette.id}>
                 <div className="shrink-0 w-72 h-72">
                   <img src={recette.image} alt="Plat" />
                 </div>

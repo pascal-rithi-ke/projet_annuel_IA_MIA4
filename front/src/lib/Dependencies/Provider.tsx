@@ -11,6 +11,8 @@ import { LivreursInMemoryRepositories } from '../../Modules/Livreur/Repositories
 import { LivreursRepositoriesReactQuery } from '../../Modules/Livreur/React-query/Livreur.repositories.react-query';
 import { CustomerRepositoriesReactQuery } from '../../Modules/Customer/React-query/Customer.repositories.react-query';
 import { CustomerInMemoryRepositories } from '../../Modules/Customer/Repositories/Customer.repositories.inmemory';
+import { CommandeRepositoriesReactQuery } from '../../Modules/Commande/React-query/Commande.repositories.react-query';
+import { CommandeInMemoryRepositories } from '../../Modules/Commande/Repositories/Commande.repositories.inmemory';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,6 +35,7 @@ export const Provider = ({ children }: { children: any }) => {
         AuthService: new AuthRepositoriesReactQuery(new AuthInMemoryRepositories()),
         CartService: new CartRepositoriesReactQuery(new CartInMemoryRepositories()),
         CustomerService: new CustomerRepositoriesReactQuery(new CustomerInMemoryRepositories()),
+        CommandeService: new CommandeRepositoriesReactQuery(new CommandeInMemoryRepositories()),
         livreursService: new LivreursRepositoriesReactQuery(new LivreursInMemoryRepositories()),
       }}>
         <QueryClientProvider client={queryClient}>
