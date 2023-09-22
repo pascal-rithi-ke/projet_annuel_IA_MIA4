@@ -7,7 +7,7 @@ export class RecettesInMemoryRepositories implements IRecetteRepositories {
       resolve(FakeRecetteData);
     });
   }
-  getId(id: number): Promise<Recette> {
+  getId(id: string): Promise<Recette> {
     return new Promise<Recette>((resolve) => {
       const recette = FakeRecetteData.find((recette) => recette.id === id);
 
@@ -15,13 +15,42 @@ export class RecettesInMemoryRepositories implements IRecetteRepositories {
         throw new Error("Recette introuvable");
       }
       resolve(recette);
+    }
+    );
+  }
+  edit(recette: Recette): Promise<Recette> {
+    return new Promise<Recette>((resolve) => {
+      const recetteToEdit = FakeRecetteData.find((r) => r.id === recette.id);
+
+      if (recetteToEdit) {
+        recetteToEdit.name = recette.name;
+        recetteToEdit.description = recette.description;
+        recetteToEdit.image = recette.image;
+        recetteToEdit.price = recette.price;
+        recetteToEdit.quantity = recette.quantity;
+        recetteToEdit.available = recette.available;
+        recetteToEdit.type = recette.type;
+
+        resolve(recetteToEdit);
+      }
+    });
+  }
+  delete(recetteId: string): Promise<Recette> {
+    return new Promise<Recette>((resolve) => {
+      const recetteToDelete = FakeRecetteData.find((r) => r.id === recetteId);
+
+      if (recetteToDelete) {
+        FakeRecetteData.splice(FakeRecetteData.indexOf(recetteToDelete), 1);
+
+        resolve(recetteToDelete);
+      }
     });
   }
 }
 
-export const FakeRecetteData = [
+const FakeRecetteData: Recette[] = [
   {
-    id: 1,
+    id: "1",
     name: "Recette 1",
     description: "Description 1",
     image:
@@ -32,7 +61,7 @@ export const FakeRecetteData = [
     type: 0,
   },
   {
-    id: 2,
+    id: "2",
     name: "Recette 2",
     description: "Description 2",
     image:
@@ -43,7 +72,7 @@ export const FakeRecetteData = [
     type: 1,
   },
   {
-    id: 3,
+    id: "3",
     name: "Recette 3",
     description: "Description 3",
     image:
@@ -54,7 +83,7 @@ export const FakeRecetteData = [
     type: 1,
   },
   {
-    id: 4,
+    id: "4",
     name: "Recette 4",
     description: "Description 4",
     image:

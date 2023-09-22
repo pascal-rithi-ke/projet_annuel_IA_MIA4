@@ -1,4 +1,4 @@
-enum RecetteType {
+export enum RecetteType {
   PLAT,
   DESSERT,
 }
